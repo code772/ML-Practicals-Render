@@ -1,0 +1,296 @@
+Practical 10: Ensemble Learning
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+df = pd.read_csv(r"breast_cancer_wisconsin.csv")
+
+X = df.drop("target", axis=1)
+y = df["target"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+models = {
+    "Random Forest": RandomForestClassifier(random_state=42),
+    "Decision Tree": DecisionTreeClassifier(random_state=42)
+}
+
+results = []
+
+for name, model in models.items():
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+
+    results.append({
+        "Model": name,
+        "Accuracy": accuracy_score(y_test, y_pred),
+        "Precision": precision_score(y_test, y_pred),
+        "Recall": recall_score(y_test, y_pred),
+        "F1-score": f1_score(y_test, y_pred)
+    })
+
+results_df = pd.DataFrame(results)
+print(results_df.round(4))
+
+
+
+
+
+
+\\\\\\
+
+ractical 10: Ensemble Learning
+1. Aim
+To analyze the performance of ensemble learning techniques such as Random Forest or Boosting on a suitable open-access dataset and compare their performance with a baseline machine learning model.
+2. What is Ensemble Learning?
+Ensemble Learning is a machine learning technique that combines multiple individual models to produce a more accurate and reliable prediction.
+
+Instead of depending on a single model, it combines the predictions of several models to improve overall performance.
+
+Example: Instead of asking one person to make a decision, we ask several people and combine their opinions to reach a better decision.
+3. Types of Ensemble Learning
+There are three major types:
+A. Bagging (Bootstrap Aggregating)
+- Trains multiple models independently on different random samples of the dataset.
+- Combines their predictions using voting or averaging.
+- Reduces variance and helps prevent overfitting.
+- Example: Random Forest.
+B. Boosting
+- Trains models sequentially, one after another.
+- Each new model tries to correct the errors made by previous models.
+- Combines all models to improve prediction performance.
+- Examples: AdaBoost, Gradient Boosting, XGBoost.
+C. Stacking
+- Combines predictions from multiple different machine learning models.
+- Uses another model called a meta-model to make the final prediction.
+- Example: Combining Decision Tree, SVM, and Logistic Regression.
+4. Important Ensemble Learning Techniques
+A. Random Forest
+Random Forest is an ensemble learning algorithm that uses multiple Decision Trees to make predictions.
+
+Working:
+1. Takes random samples from the original dataset.
+2. Builds multiple Decision Trees independently.
+3. Each tree makes a prediction.
+4. Combines predictions using majority voting for classification or averaging for regression.
+5. Produces the final prediction.
+B. Boosting
+Boosting is an ensemble technique in which multiple weak learners are trained sequentially to create a strong predictive model.
+
+Working:
+1. Trains the first model on the dataset.
+2. Identifies incorrectly predicted observations.
+3. Gives more attention or weight to difficult observations, depending on the boosting algorithm.
+4. Trains the next model to improve previous predictions.
+5. Combines the predictions to produce the final result.
+5. What is a Baseline Model?
+A Baseline Model is a simple machine learning model used as a reference point to evaluate the performance of more advanced models.
+
+Examples:
+- Logistic Regression
+- Decision Tree
+- Linear Regression
+For example, if Logistic Regression gives 80% accuracy and Random Forest gives 90% accuracy, Random Forest performs better on that evaluation.
+6. Suitable Open-Access Datasets
+Some commonly used datasets are:
+Dataset	Purpose
+Iris Dataset	Flower classification
+Titanic Dataset	Passenger survival prediction
+Breast Cancer Dataset	Cancer classification
+Wine Dataset	Wine classification
+
+
+Example: The Titanic dataset can be used to predict whether a passenger survived or not.
+7. Workflow of Ensemble Learning
+1. Import required Python libraries.
+2. Load the open-access dataset.
+3. Perform data preprocessing.
+4. Split the dataset into training and testing sets.
+5. Train a baseline model.
+6. Train ensemble models such as Random Forest or Boosting.
+7. Predict the output using each model.
+8. Evaluate performance using accuracy, precision, recall, and F1-score.
+9. Compare the results of all models.
+8. Important Evaluation Metrics
+Metric	Meaning
+Accuracy	Measures the percentage of correct predictions.
+Precision	Measures how many positive predictions are actually positive.
+Recall	Measures how many actual positive cases are correctly identified.
+F1-Score	Harmonic mean of precision and recall.
+Confusion Matrix	Shows correct and incorrect predictions.
+
+
+9. Important Python Libraries and Functions
+Library / Function	Purpose
+pandas	Data handling
+numpy	Numerical calculations
+train_test_split()	Splits dataset into training and testing sets
+LogisticRegression()	Creates a baseline classification model
+RandomForestClassifier()	Creates a Random Forest model
+AdaBoostClassifier()	Creates an AdaBoost model
+GradientBoostingClassifier()	Creates a Gradient Boosting model
+fit()	Trains the model
+predict()	Makes predictions
+accuracy_score()	Calculates accuracy
+classification_report()	Displays precision, recall, and F1-score
+confusion_matrix()	Generates a confusion matrix
+
+
+10. Advantages of Ensemble Learning
+1. Improves prediction performance in many situations.
+2. Combines the strengths of multiple models.
+3. Reduces overfitting in some cases.
+4. Provides more reliable predictions.
+5. Can handle complex datasets.
+11. Limitations of Ensemble Learning
+1. Requires more computational power.
+2. Training can take more time.
+3. Models can be difficult to interpret.
+4. Requires proper parameter tuning.
+5. Does not always perform better than a single model.
+12. Important Viva Questions and Answers
+Basic Concepts
+Q1. What is Ensemble Learning?
+Ensemble Learning combines multiple machine learning models to improve prediction performance.
+
+Q2. Why do we use Ensemble Learning?
+To improve accuracy, reliability, and overall prediction performance.
+
+Q3. What is a weak learner?
+A weak learner is a model that performs slightly better than random guessing.
+
+Q4. What is a strong learner?
+A strong learner is a model that provides better and more reliable predictions.
+
+Q5. What are the three main types of Ensemble Learning?
+Bagging, Boosting, and Stacking.
+
+Q6. What is a baseline model?
+A simple model used as a reference for comparing the performance of other models.
+Random Forest
+Q7. What is Random Forest?
+Random Forest is an ensemble algorithm that combines multiple Decision Trees to make predictions.
+
+Q8. Which ensemble technique does Random Forest use?
+Bagging.
+
+Q9. How does Random Forest make its final prediction?
+It uses majority voting for classification and averaging for regression.
+
+Q10. What is a Decision Tree?
+A Decision Tree is a supervised learning algorithm that makes decisions using a tree-like structure.
+
+Q11. What is the main advantage of Random Forest?
+It generally reduces overfitting compared with a single Decision Tree and can provide good predictive performance.
+
+Q12. Can Random Forest be used for regression?
+Yes, Random Forest supports both classification and regression.
+Boosting
+Q13. What is Boosting?
+Boosting combines multiple weak learners sequentially to create a strong learner.
+
+Q14. How does Boosting work?
+Each new model tries to improve upon the mistakes of previous models.
+
+Q15. Name some Boosting algorithms.
+AdaBoost, Gradient Boosting, and XGBoost.
+
+Q16. What is AdaBoost?
+AdaBoost is a boosting algorithm that gives more weight to incorrectly classified observations so that later learners focus on them.
+
+Q17. What is Gradient Boosting?
+Gradient Boosting builds models sequentially, where each new model tries to reduce the errors of the combined previous models.
+Comparison and Evaluation
+Q18. What is the difference between Bagging and Boosting?
+Bagging	Boosting
+Models are trained independently.	Models are trained sequentially.
+Reduces variance.	Focuses on correcting previous errors.
+Example: Random Forest.	Example: AdaBoost.
+
+
+Q19. What is the difference between Random Forest and a single Decision Tree?
+A Decision Tree uses one tree, whereas Random Forest combines multiple Decision Trees.
+
+Q20. Which evaluation metrics are used?
+Accuracy, precision, recall, F1-score, and confusion matrix.
+
+Q21. What is overfitting?
+Overfitting occurs when a model learns the training data too closely and performs poorly on unseen data.
+
+Q22. Does Ensemble Learning always improve accuracy?
+No. Its performance depends on the dataset, model selection, and parameter tuning.
+
+Q23. What is majority voting?
+It selects the class predicted by the majority of models.
+
+Q24. What is averaging in Random Forest?
+It calculates the average of predictions from multiple trees in regression tasks.
+
+Q25. What is Stacking?
+Stacking combines predictions from different models using another model called a meta-model.
+
+Q26. What is the purpose of train-test splitting?
+To train the model on one part of the data and evaluate it on unseen data.
+
+Q27. Which is better, Random Forest or Boosting?
+Neither is always better. Performance depends on the dataset and problem.
+
+Q28. What is the main difference between classification and regression?
+Classification predicts categories, whereas regression predicts continuous numerical values.
+
+Q29. What is n_estimators in Random Forest?
+It specifies the number of Decision Trees used in the Random Forest.
+
+Q30. What is random_state?
+It controls randomness to help produce reproducible results.
+13. Important Differences for Viva
+Random Forest vs Boosting
+Random Forest	Boosting
+Uses Bagging.	Uses Boosting.
+Models are trained independently.	Models are trained sequentially.
+Uses multiple Decision Trees.	Combines multiple weak learners.
+Reduces variance.	Focuses on reducing prediction errors.
+Example: Random Forest.	Examples: AdaBoost, Gradient Boosting.
+
+
+Single Model vs Ensemble Model
+Single Model	Ensemble Model
+Uses one model.	Combines multiple models.
+Usually simpler.	Usually more complex.
+May have higher variance or bias.	Can reduce certain types of errors.
+Example: Decision Tree.	Example: Random Forest.
+
+
+14. Quick Revision Before Viva
+Question	Answer
+Ensemble Learning	Combining multiple models
+Bagging	Independent model training
+Boosting	Sequential model training
+Stacking	Combining models using a meta-model
+Random Forest	Collection of Decision Trees
+AdaBoost	Adaptive Boosting
+Baseline Model	Reference model
+Weak Learner	Model slightly better than random guessing
+Majority Voting	Most frequently predicted class
+n_estimators	Number of estimators/models
+Accuracy	Correct predictions percentage
+F1-score	Harmonic mean of precision and recall
+
+
+Most important points to remember:
+1. Random Forest uses Bagging.
+2. Boosting trains models sequentially.
+3. Random Forest uses multiple Decision Trees.
+4. Baseline models are used for comparison.
+5. Ensemble Learning does not guarantee better accuracy.
+6. Always evaluate models on unseen test data.

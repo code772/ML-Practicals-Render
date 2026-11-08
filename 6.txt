@@ -1,0 +1,275 @@
+Practical 6: Logistic Regression
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix, precision_score, recall_score, f1_score, accuracy_score
+
+df = pd.read_csv(r"add Social Network Ads csv file path here")
+
+X = df[["Age", "EstimatedSalary"]]
+y = df["Purchased"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+model = LogisticRegression()
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Precision:", precision_score(y_test, y_pred))
+print("Recall:", recall_score(y_test, y_pred))
+print("F1 Score:", f1_score(y_test, y_pred))
+
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("Confusion Matrix")
+plt.show()
+
+
+
+
+
+\\\\\\\
+Practical 6: Logistic Regression
+1. Aim
+To implement a binary classification model using Logistic Regression on a suitable open-access dataset and evaluate its performance using a confusion matrix, precision, recall and F1-score.
+2. What is Logistic Regression?
+Logistic Regression is a supervised machine learning algorithm used mainly for classification problems.
+
+It predicts the probability of an output belonging to a particular class.
+
+Example:
+- Email: Spam or Not Spam.
+- Disease: Positive or Negative.
+- Student: Pass or Fail.
+3. What is Binary Classification?
+Binary classification is a type of classification in which the output has only two possible classes.
+
+Example:
+- 0 = Not Spam
+- 1 = Spam
+4. How Logistic Regression Works
+1. Load a suitable dataset.
+2. Separate input features and target variable.
+3. Split the dataset into training and testing sets.
+4. Train the Logistic Regression model.
+5. Predict the output for test data.
+6. Generate a confusion matrix.
+7. Calculate precision, recall and F1-score.
+8. Evaluate the model's performance.
+5. Logistic Regression Formula
+Logistic Regression uses the sigmoid function to convert predictions into probabilities.
+\[
+P(y=1)=\frac{1}{1+e^{-z}}
+\]
+Where:
+\[
+z=b_0+b_1x_1+b_2x_2+\cdots+b_nx_n
+\]
+- P(y=1): Probability of belonging to class 1.
+- e: Mathematical constant.
+- z: Linear combination of input features.
+- b: Model coefficients.
+- x: Input features.
+Decision threshold: Usually 0.5.
+- Probability ≥ 0.5 → Class 1.
+- Probability < 0.5 → Class 0.
+6. What is a Confusion Matrix?
+A confusion matrix is a table used to evaluate the performance of a classification model by comparing actual and predicted values.
+	Predicted Positive	Predicted Negative
+Actual Positive	True Positive (TP)	False Negative (FN)
+Actual Negative	False Positive (FP)	True Negative (TN)
+
+
+Four important terms:
+- True Positive (TP): Model correctly predicts positive.
+- True Negative (TN): Model correctly predicts negative.
+- False Positive (FP): Model predicts positive, but actual value is negative.
+- False Negative (FN): Model predicts negative, but actual value is positive.
+7. Evaluation Metrics
+1. Accuracy
+
+Measures the percentage of total correct predictions.
+\[
+Accuracy=\frac{TP+TN}{TP+TN+FP+FN}
+\]
+2. Precision
+
+Measures how many predicted positive values are actually positive.
+\[
+Precision=\frac{TP}{TP+FP}
+\]
+3. Recall
+
+Measures how many actual positive values are correctly identified.
+\[
+Recall=\frac{TP}{TP+FN}
+\]
+4. F1-Score
+
+It is the harmonic mean of precision and recall.
+\[
+F1=2\times\frac{Precision\times Recall}{Precision+Recall}
+\]
+Easy way to remember:
+Metric	Meaning
+Accuracy	Overall correct predictions
+Precision	Correct positive predictions out of all predicted positives
+Recall	Correct positive predictions out of all actual positives
+F1-score	Balance between precision and recall
+
+
+8. Important Libraries and Functions
+Library / Function	Purpose
+pandas	Data handling
+numpy	Numerical calculations
+train_test_split()	Splits dataset
+StandardScaler()	Scales input features
+LogisticRegression()	Creates Logistic Regression model
+fit()	Trains the model
+predict()	Predicts classes
+confusion_matrix()	Generates confusion matrix
+precision_score()	Calculates precision
+recall_score()	Calculates recall
+f1_score()	Calculates F1-score
+classification_report()	Displays classification metrics
+
+
+9. Advantages
+- Simple and easy to implement.
+- Suitable for binary classification.
+- Gives probability-based predictions.
+- Computationally efficient.
+- Easy to interpret.
+10. Limitations
+- Assumes a linear relationship between input features and log-odds.
+- May not perform well on complex nonlinear datasets without feature engineering.
+- Can be affected by multicollinearity.
+- Requires proper feature preparation and scaling where appropriate.
+Important Viva Questions and Answers
+Q1. What is Logistic Regression?
+Logistic Regression is a supervised machine learning algorithm used for classification problems.
+
+Q2. Why is it called Logistic Regression?
+Because it uses the logistic or sigmoid function to predict probabilities.
+
+Q3. Is Logistic Regression used for classification or regression?
+It is mainly used for classification.
+
+Q4. Is Logistic Regression supervised or unsupervised?
+Supervised learning.
+
+Q5. What is binary classification?
+Classification in which there are only two possible output classes.
+
+Q6. What is the sigmoid function?
+It converts any real-valued input into a probability between 0 and 1.
+
+Q7. What is the range of the sigmoid function?
+0 to 1, excluding the endpoints for finite inputs.
+
+Q8. What is the default decision threshold?
+Usually 0.5.
+
+Q9. What happens if the predicted probability is 0.8?
+With a threshold of 0.5, the model predicts class 1.
+
+Q10. What is a confusion matrix?
+It is a table that compares actual and predicted classes to evaluate a classification model.
+
+Q11. What is True Positive?
+When the actual value is positive and the model also predicts positive.
+
+Q12. What is True Negative?
+When the actual value is negative and the model also predicts negative.
+
+Q13. What is False Positive?
+When the actual value is negative but the model predicts positive.
+
+Q14. What is False Negative?
+When the actual value is positive but the model predicts negative.
+
+Q15. What is precision?
+Precision measures how many predicted positive cases are actually positive.
+
+Q16. What is recall?
+Recall measures how many actual positive cases are correctly identified.
+
+Q17. What is F1-score?
+F1-score is the harmonic mean of precision and recall.
+
+Q18. Why do we use F1-score?
+It provides a balance between precision and recall, especially when classes are imbalanced.
+
+Q19. What is the difference between precision and recall?
+Precision focuses on the correctness of positive predictions, while recall focuses on identifying actual positive cases.
+
+Q20. What is accuracy?
+Accuracy is the ratio of correct predictions to total predictions.
+
+Q21. What is overfitting?
+When a model performs well on training data but poorly on unseen data.
+
+Q22. What is the purpose of train-test split?
+To train the model on one part of the data and evaluate it on unseen data.
+
+Q23. What is classification_report()?
+It displays precision, recall, F1-score and support for each class.
+
+Q24. What is support?
+Support is the number of actual occurrences of each class in the test dataset.
+
+Q25. Can Logistic Regression be used for multiclass classification?
+Yes. It can use strategies such as One-vs-Rest or multinomial classification.
+
+Q26. What is the difference between Linear and Logistic Regression?
+Linear Regression	Logistic Regression
+Used for regression	Used for classification
+Predicts continuous values	Predicts class probabilities
+Uses a linear equation	Uses sigmoid or other logistic-based functions
+Output is not restricted to 0–1	Probability lies between 0 and 1
+
+
+Q27. Why is feature scaling used?
+It brings features to a comparable scale and can help model convergence.
+
+Q28. Which dataset can be used for Logistic Regression?
+Breast Cancer Wisconsin dataset, Titanic dataset or Iris dataset converted into a binary classification problem.
+
+Q29. What is class imbalance?
+When one class has significantly more samples than another class.
+
+Q30. Which metric is useful when false negatives are costly?
+Recall, because it measures how many actual positive cases are identified.
+Most Important Points to Remember
+Topic	Answer
+Algorithm	Logistic Regression
+Learning type	Supervised
+Problem type	Classification
+Output	Probability
+Activation function	Sigmoid
+Default threshold	0.5
+Evaluation tool	Confusion Matrix
+Precision	TP / (TP + FP)
+Recall	TP / (TP + FN)
+F1-score	Harmonic mean of precision and recall
+Python class	LogisticRegression()
+Main library	Scikit-learn
+
+
+Important viva tip: Remember the difference between False Positive and False Negative. These are frequently asked in classification practicals.

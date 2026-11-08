@@ -1,0 +1,163 @@
+Practical 7(a): Support Vector Machine (SVM) – Linear Kernel
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+
+df = pd.read_csv(r"add california csv file path here")
+
+df["HouseCategory"] = (df["MedHouseVal"] > df["MedHouseVal"].median()).astype(int)
+
+X = df.drop(["MedHouseVal", "HouseCategory"], axis=1)
+y = df["HouseCategory"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+model = SVC(kernel="linear")
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+print("Accuracy:", accuracy_score(y_test, y_pred))
+print("Precision:", precision_score(y_test, y_pred))
+print("Recall:", recall_score(y_test, y_pred))
+print("F1 Score:", f1_score(y_test, y_pred))
+
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("SVM Linear Kernel - Confusion Matrix")
+plt.show()
+
+
+
+
+
+\\\\\\\\
+Practical 7(a): Support Vector Machine (SVM) – Linear Kernel
+1. Aim
+To implement a Support Vector Machine classifier using a Linear Kernel on a suitable open-access dataset and evaluate its classification performance using appropriate evaluation metrics.
+2. What is Support Vector Machine (SVM)?
+Support Vector Machine is a supervised machine learning algorithm used for classification and regression.
+
+It finds the best decision boundary (hyperplane) that separates different classes of data.
+
+Example:
+Classifying emails into:
+- Spam
+- Not Spam
+3. What is a Hyperplane?
+A hyperplane is a decision boundary that separates data points belonging to different classes.
+
+In simple words, it is a line in 2D, a plane in 3D, or a higher-dimensional boundary that separates classes.
+4. What is a Linear Kernel?
+A Linear Kernel is used when data can be separated approximately using a straight line or flat hyperplane.
+
+It works well when the relationship between features and classes is approximately linear.
+5. How Linear SVM Works
+1. Load a suitable dataset.
+2. Separate input features and target variable.
+3. Split the dataset into training and testing sets.
+4. Standardize the features.
+5. Create an SVM model with a Linear Kernel.
+6. Train the model.
+7. Predict the output.
+8. Evaluate performance using classification metrics.
+6. Important SVM Terms
+1. Support Vectors:
+Data points closest to the decision boundary. They help determine the position of the hyperplane.
+
+2. Margin:
+The distance between the decision boundary and the nearest data points from each class.
+
+3. Hyperplane:
+The boundary that separates different classes.
+
+4. Kernel:
+A function used to handle the relationship between data points and create decision boundaries.
+
+5. C Parameter:
+Controls the trade-off between a wider margin and classification errors.
+7. Important Libraries and Functions
+Library / Function	Purpose
+pandas	Data handling
+numpy	Numerical calculations
+train_test_split()	Splits dataset
+StandardScaler()	Scales features
+SVC()	Creates SVM classifier
+kernel='linear'	Selects Linear Kernel
+fit()	Trains the model
+predict()	Predicts output
+accuracy_score()	Calculates accuracy
+confusion_matrix()	Generates confusion matrix
+classification_report()	Displays precision, recall and F1-score
+
+
+8. Advantages
+- Effective for high-dimensional data.
+- Works well when classes are linearly separable.
+- Uses support vectors to determine the decision boundary.
+- Can perform well with a small or medium-sized dataset.
+9. Limitations
+- Not suitable for every nonlinear dataset.
+- Performance depends on parameter selection.
+- Feature scaling is generally important.
+- Can be computationally expensive for large datasets.
+10. Viva Questions and Answers
+Q1. What is SVM?
+SVM is a supervised machine learning algorithm that finds the best decision boundary to separate different classes.
+
+Q2. What is the full form of SVM?
+Support Vector Machine.
+
+Q3. Is SVM supervised or unsupervised?
+Supervised learning.
+
+Q4. What is a Linear Kernel?
+It creates a linear decision boundary to separate classes.
+
+Q5. What is a hyperplane?
+It is a decision boundary that separates different classes.
+
+Q6. What are support vectors?
+They are the data points closest to the decision boundary.
+
+Q7. What is a margin?
+It is the distance between the hyperplane and the nearest data points.
+
+Q8. What is the main objective of SVM?
+To find a decision boundary with the maximum possible margin while controlling classification errors.
+
+Q9. What is the C parameter?
+C controls the penalty for classification errors.
+
+Q10. What happens when C is high?
+The model tries harder to classify training points correctly, which can lead to a narrower margin and possible overfitting.
+
+Q11. What happens when C is low?
+The model allows more classification errors and generally prefers a wider margin.
+
+Q12. Why is feature scaling important in SVM?
+Because SVM depends on distances and margins, features with larger scales can dominate.
+
+Q13. Which function creates an SVM classifier in Python?
+SVC() from Scikit-learn.
+
+Q14. What is the default kernel in SVC?
+RBF.
+
+Q15. Which metrics are used to evaluate SVM?
+Accuracy, precision, recall, F1-score and confusion matrix.

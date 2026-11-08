@@ -1,0 +1,315 @@
+Practical 2(b): Dimensionality Reduction Using LDA
+
+import pandas as pd
+import time
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+df = pd.read_csv(r"add iris csv file path here")
+
+X = df.drop("target", axis=1)
+y = df["target"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+start = time.time()
+model = LogisticRegression(max_iter=1000)
+model.fit(X_train, y_train)
+pred = model.predict(X_test)
+time1 = time.time() - start
+acc1 = accuracy_score(y_test, pred)
+
+lda = LinearDiscriminantAnalysis(n_components=2)
+X_train_lda = lda.fit_transform(X_train, y_train)
+X_test_lda = lda.transform(X_test)
+
+start = time.time()
+model_lda = LogisticRegression(max_iter=1000)
+model_lda.fit(X_train_lda, y_train)
+pred_lda = model_lda.predict(X_test_lda)
+time2 = time.time() - start
+acc2 = accuracy_score(y_test, pred_lda)
+
+print("Original Features:", X.shape[1])
+print("Reduced Features:", X_train_lda.shape[1])
+
+print("\nBefore LDA")
+print("Accuracy:", acc1)
+print("Execution Time:", time1)
+
+print("\nAfter LDA")
+print("Accuracy:", acc2)
+print("Execution Time:", time2)
+
+
+
+
+
+
+
+
+\\\\\\\\\
+Practical 2(b): Dimensionality Reduction Using LDA
+Algorithm: Linear Discriminant Analysis (LDA)
+1. Aim of the Practical
+To apply dimensionality reduction using Linear Discriminant Analysis (LDA) on a suitable high-dimensional dataset and observe the influence of feature reduction on model performance and computational efficiency.
+2. What is Dimensionality Reduction?
+Dimensionality Reduction is the process of reducing the number of input features in a dataset while preserving important information.
+
+Why is it required?
+- Reduces computational time.
+- Reduces memory usage.
+- Removes unnecessary information.
+- Simplifies complex datasets.
+- Can improve model performance.
+3. What is LDA?
+LDA stands for Linear Discriminant Analysis.
+
+It is a supervised dimensionality reduction technique used to reduce the number of features while maintaining maximum separation between different classes.
+
+LDA tries to find directions that make different classes as distinguishable as possible.
+
+Example:
+
+Suppose a dataset contains information about three types of flowers. LDA reduces the number of features while trying to keep the three flower classes well separated.
+4. How Does LDA Work?
+LDA generally follows these steps:
+1. Load the dataset.
+2. Separate input features and target labels.
+3. Calculate the mean of each class.
+4. Calculate within-class scatter.
+5. Calculate between-class scatter.
+6. Find the best discriminant directions.
+7. Select the required number of components.
+8. Transform the original dataset into a lower-dimensional dataset.
+The main objective is to maximize the separation between classes and minimize variation within each class.
+5. Important LDA Terminology
+Term	Meaning
+LDA	Linear Discriminant Analysis
+Class	Category or group of data
+Mean	Average value of observations
+Within-class scatter	Variation within the same class
+Between-class scatter	Separation between different classes
+Discriminant	Direction that separates classes
+Eigenvalues	Represent the discriminative strength of directions
+Eigenvectors	Represent the directions of separation
+n_components	Number of components to retain
+
+
+6. Objective of LDA
+LDA mainly focuses on two things:
+
+1. Minimize Within-Class Variation
+
+It tries to keep data points belonging to the same class close together.
+
+2. Maximize Between-Class Variation
+
+It tries to keep data points belonging to different classes far apart.
+
+This helps machine learning models distinguish between different categories.
+7. Important Python Libraries
+Library	Purpose
+NumPy	Numerical calculations
+Pandas	Data manipulation
+Matplotlib	Data visualization
+Seaborn	Statistical visualization
+Scikit-learn	Machine learning algorithms
+LinearDiscriminantAnalysis	Performs LDA
+StandardScaler	Standardizes numerical features
+train_test_split	Splits data into training and testing sets
+accuracy_score	Calculates model accuracy
+
+
+8. Important LDA Functions
+Function	Purpose
+LinearDiscriminantAnalysis()	Creates an LDA object
+fit()	Learns discriminant directions
+transform()	Reduces dataset dimensions
+fit_transform()	Learns and transforms data
+predict()	Predicts class labels
+score()	Calculates model accuracy
+n_components	Specifies the number of components
+StandardScaler()	Standardizes numerical features
+train_test_split()	Splits data into training and testing sets
+
+
+9. Advantages of LDA
+1. Reduces the number of features.
+2. Improves class separation.
+3. Reduces computational complexity.
+4. Can improve classification performance.
+5. Helps visualize high-dimensional data.
+6. Works well with linearly separable classes.
+10. Limitations of LDA
+1. Requires labelled data.
+2. Assumes normally distributed data within each class in its classical formulation.
+3. Assumes equal class covariance matrices in its classical formulation.
+4. Can perform poorly when classes are not linearly separable.
+5. Sensitive to outliers.
+6. Cannot produce more than (number of classes − 1) components.
+11. Important Viva Questions with Answers
+Basic Questions
+Q1. What is LDA?
+
+LDA stands for Linear Discriminant Analysis. It is a supervised technique used for dimensionality reduction and classification.
+
+Q2. Is LDA supervised or unsupervised?
+
+LDA is a supervised learning technique because it uses class labels.
+
+Q3. Why do we use LDA?
+
+We use LDA to reduce features and improve separation between different classes.
+
+Q4. What is the main objective of LDA?
+
+Its main objective is to maximize the separation between different classes and minimize variation within the same class.
+
+Q5. What is a class in machine learning?
+
+A class is a category to which a data observation belongs.
+
+Q6. What is a discriminant?
+
+A discriminant is a direction or function that helps separate different classes.
+
+Q7. Can LDA be used for classification?
+
+Yes. LDA can be used as a dimensionality reduction technique and also as a classification algorithm.
+Intermediate Questions
+Q8. What is within-class scatter?
+
+It measures how much data points belonging to the same class are spread out.
+
+Q9. What is between-class scatter?
+
+It measures the separation between the means of different classes.
+
+Q10. What is the difference between PCA and LDA?
+- PCA is unsupervised and focuses on maximum variance.
+- LDA is supervised and focuses on maximum class separation.
+Q11. Why does LDA require labelled data?
+
+Because it uses class labels to calculate class means and find directions that separate different classes.
+
+Q12. What is the maximum number of components in LDA?
+
+The maximum number of components is:
+
+min(number of features, number of classes − 1)
+
+For example, if there are 4 classes, LDA can produce a maximum of 3 components.
+
+Q13. What is n_components in LDA?
+
+It specifies the number of discriminant components to retain.
+
+Q14. What is the difference between fit() and transform()?
+- fit() learns the discriminant directions.
+- transform() converts the data into the reduced dimensions.
+Q15. What is the role of eigenvalues in LDA?
+
+Eigenvalues indicate the discriminative strength of the corresponding directions.
+Tricky Questions
+Q16. Does LDA always improve accuracy?
+
+No. Accuracy may increase, decrease, or remain the same depending on the dataset and information retained.
+
+Q17. Can LDA work without target labels?
+
+No. LDA requires labelled data for supervised dimensionality reduction.
+
+Q18. Can LDA reduce a dataset with two classes into more than one component?
+
+No. For two classes, the maximum number of LDA components is one.
+
+Q19. What happens if we select too few components?
+
+Important class-separating information may be lost.
+
+Q20. What is the difference between feature extraction and feature selection?
+- Feature extraction creates new features from existing features.
+- Feature selection selects important existing features.
+Q21. Is LDA affected by outliers?
+
+Yes. Outliers can affect class means and scatter calculations.
+
+Q22. What is the difference between PCA and LDA in terms of accuracy?
+
+PCA focuses on preserving variance, whereas LDA focuses on separating classes. Therefore, LDA can be more useful for classification tasks, but neither guarantees higher accuracy.
+
+Q23. What is overfitting?
+
+Overfitting occurs when a model performs very well on training data but poorly on unseen data.
+
+Q24. What is the difference between LDA and Logistic Regression?
+
+LDA models class distributions and uses them for classification, whereas Logistic Regression directly models class probabilities.
+
+Q25. What is computational efficiency?
+
+Computational efficiency refers to how quickly and effectively a program uses processing power and memory.
+12. Important Differences
+PCA vs LDA
+PCA	LDA
+Principal Component Analysis	Linear Discriminant Analysis
+Unsupervised technique	Supervised technique
+Does not require class labels	Requires class labels
+Maximizes data variance	Maximizes class separation
+Focuses on overall data variation	Focuses on class discrimination
+Can retain up to the original feature dimensions	Maximum components = classes − 1
+
+
+LDA vs Logistic Regression
+LDA	Logistic Regression
+Can perform dimensionality reduction	Primarily a classification algorithm
+Models class distributions	Models class probabilities
+Uses class means and covariance	Uses a logistic function
+Can be used for classification	Used for classification
+
+
+13. Most Important Questions for Tomorrow
+Prioritize these 15 questions:
+1. What is dimensionality reduction?
+2. What is LDA?
+3. Is LDA supervised or unsupervised?
+4. Why do we use LDA?
+5. What is the main objective of LDA?
+6. What is within-class scatter?
+7. What is between-class scatter?
+8. What is the difference between PCA and LDA?
+9. Why does LDA require labelled data?
+10. What is n_components?
+11. What is the maximum number of components in LDA?
+12. Can LDA be used for classification?
+13. What are the limitations of LDA?
+14. What is the difference between feature selection and feature extraction?
+15. How does LDA improve computational efficiency?
+14. Important Practical Concept
+Your experiment asks you to observe the influence of dimensionality reduction on model performance and computational efficiency.
+
+Understand these three comparisons:
+Comparison	Meaning
+Before LDA vs After LDA	Number of features before and after reduction
+Accuracy before vs after LDA	Effect on prediction performance
+Training time before vs after LDA	Effect on computational efficiency
+
+
+Important points to remember:
+- PCA does not require class labels.
+- LDA requires class labels.
+- PCA maximizes variance.
+- LDA maximizes class separation.
+- LDA can produce at most (number of classes − 1) components.
+- LDA does not guarantee improved accuracy.
+Exam tip: The most likely question in this practical is: "What is the difference between PCA and LDA?" Prepare that comparison thoroughly because it connects both parts of your dimensionality reduction practical.

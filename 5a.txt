@@ -1,0 +1,175 @@
+Practical 5(a): Ridge Regression
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.metrics import mean_squared_error, r2_score
+
+df = pd.read_csv(r"add california csv file path here")
+
+X = df.drop("MedHouseVal", axis=1)
+y = df["MedHouseVal"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+
+ridge = Ridge(alpha=1.0)
+ridge.fit(X_train, y_train)
+ridge_pred = ridge.predict(X_test)
+
+print("Linear Regression")
+print("MSE:", mean_squared_error(y_test, y_pred))
+print("RMSE:", np.sqrt(mean_squared_error(y_test, y_pred)))
+print("R2 Score:", r2_score(y_test, y_pred))
+
+print("\nRidge Regression")
+print("MSE:", mean_squared_error(y_test, ridge_pred))
+print("RMSE:", np.sqrt(mean_squared_error(y_test, ridge_pred)))
+print("R2 Score:", r2_score(y_test, ridge_pred))
+
+plt.figure(figsize=(10, 6))
+
+plt.scatter(y_test, y_pred, alpha=0.5, label="Linear Regression")
+plt.scatter(y_test, ridge_pred, alpha=0.5, label="Ridge Regression")
+
+minimum = min(y_test.min(), y_pred.min(), ridge_pred.min())
+maximum = max(y_test.max(), y_pred.max(), ridge_pred.max())
+
+plt.plot([minimum, maximum], [minimum, maximum],
+         "r--", label="Perfect Prediction")
+
+plt.xlabel("Actual House Price")
+plt.ylabel("Predicted House Price")
+plt.title("Actual vs Predicted Values")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
+
+
+
+
+
+\\\\\\
+Practical 5(a): Ridge Regression
+1. Aim
+To implement Ridge Regression on a suitable multivariate dataset and observe its influence on model overfitting and multicollinearity.
+2. What is Ridge Regression?
+Ridge Regression is a regularization technique used in Linear Regression to reduce overfitting and handle multicollinearity.
+
+It adds a penalty to the model's cost function. This penalty reduces the size of the model coefficients but usually does not make them exactly zero.
+3. What is Regularization?
+Regularization is a technique used to prevent overfitting by adding a penalty to the model for having large coefficients.
+
+Main purpose:
+- Reduce overfitting.
+- Improve model generalization.
+- Control large coefficients.
+- Make the model more stable.
+4. Ridge Regression Formula
+\[
+\text{Cost Function} = MSE + \lambda \sum_{j=1}^{n} w_j^2
+\]
+Where:
+- MSE: Mean Squared Error.
+- λ (Lambda): Regularization parameter.
+- w: Model coefficients.
+- n: Number of features.
+Ridge Regression uses the L2 penalty, which is the sum of squared coefficients.
+5. What is Multicollinearity?
+Multicollinearity occurs when two or more independent variables are highly correlated with each other.
+
+Example: House size and number of rooms may be correlated.
+
+It can make regression coefficients unstable. Ridge Regression helps reduce this problem by shrinking coefficients.
+6. How Ridge Regression Works
+1. Load a suitable dataset.
+2. Separate input features and target variable.
+3. Split the dataset into training and testing sets.
+4. Standardize the features.
+5. Train a Linear Regression model.
+6. Train a Ridge Regression model.
+7. Compare their performance using evaluation metrics.
+8. Observe the effect of regularization.
+7. Important Libraries and Functions
+Library / Function	Purpose
+pandas	Data handling
+numpy	Numerical calculations
+train_test_split()	Splits dataset
+StandardScaler()	Scales features
+Ridge()	Creates Ridge Regression model
+fit()	Trains the model
+predict()	Predicts output
+mean_squared_error()	Calculates MSE
+r2_score()	Calculates R² score
+
+
+8. Advantages
+- Reduces overfitting.
+- Handles multicollinearity.
+- Reduces large coefficient values.
+- Improves model stability.
+- Works well when many features are correlated.
+9. Limitations
+- Does not perform automatic feature selection.
+- Does not make coefficients exactly zero in typical cases.
+- Requires selection of the regularization parameter.
+- Features should generally be scaled.
+10. Important Viva Questions and Answers
+Q1. What is Ridge Regression?
+Ridge Regression is a regularized version of Linear Regression that reduces overfitting by penalizing large coefficients.
+
+Q2. Which penalty does Ridge Regression use?
+It uses the L2 penalty.
+
+Q3. What is L2 regularization?
+It is a penalty based on the sum of squared model coefficients.
+
+Q4. What is Lambda (λ)?
+Lambda controls the strength of regularization.
+
+Q5. What happens when Lambda increases?
+The coefficients become smaller, and the model becomes more restricted.
+
+Q6. What happens when Lambda is zero?
+Ridge Regression behaves like ordinary Linear Regression.
+
+Q7. Can Ridge Regression make coefficients zero?
+Generally, no. It reduces their values but usually does not make them exactly zero.
+
+Q8. How does Ridge Regression reduce overfitting?
+It penalizes large coefficients, making the model less complex and improving generalization.
+
+Q9. What is multicollinearity?
+It is a condition where independent variables are highly correlated with each other.
+
+Q10. How does Ridge Regression handle multicollinearity?
+It reduces coefficient values and makes the model more stable.
+
+Q11. Is Ridge Regression supervised or unsupervised?
+Supervised learning.
+
+Q12. Is Ridge Regression used for classification or regression?
+Regression.
+
+Q13. Why is feature scaling important?
+Because Ridge Regression penalizes coefficient values, and different feature scales can affect the penalty.
+
+Q14. Which evaluation metrics are used?
+MSE, RMSE and R² score.
+
+Q15. What is the main disadvantage of Ridge Regression?
+It cannot automatically remove unnecessary features because it generally does not make coefficients exactly zero.

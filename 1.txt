@@ -1,0 +1,296 @@
+Practical 1: Feature Engineering
+
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+
+df = pd.read_csv(r"add titanic csv file path here")
+
+print("Original Dataset")
+print(df.head())
+
+print("\nMISSING VALUES BEFORE PROCESSING")
+print(df.isnull().sum())
+
+df["Age"] = df["Age"].fillna(df["Age"].mean())
+df["Fare"] = df["Fare"].fillna(df["Fare"].mean())
+df["Embarked"] = df["Embarked"].fillna(df["Embarked"].mode()[0])
+
+df.drop(["PassengerId", "Name", "Ticket", "Cabin"], axis=1, inplace=True)
+
+df["Sex"] = LabelEncoder().fit_transform(df["Sex"])
+df = pd.get_dummies(df, columns=["Embarked"], dtype=int)
+
+print("\nDataset After Encoding: ")
+print(df.head())
+
+cols = ["Pclass", "Age", "SibSp", "Parch", "Fare"]
+df[cols] = StandardScaler().fit_transform(df[cols])
+
+print("\nDataset After Scaling: ")
+print(df.head())
+
+print("\nFinal Dataset: ")
+print(df.head())
+
+df.to_csv("cleaned_dataset.csv")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////////
+Practical 1: Feature Engineering
+Dataset: Titanic Dataset
+1. Aim of the Practical
+To apply basic feature engineering techniques such as handling missing values, encoding categorical variables, and scaling numerical attributes on the Titanic dataset to prepare clean and model-ready data for machine learning.
+2. What is Feature Engineering?
+Feature Engineering is the process of selecting, modifying, or transforming raw data into meaningful features that help machine learning algorithms perform better.
+
+Example: Converting gender values such as Male and Female into numerical values (0 and 1).
+3. What is the Titanic Dataset?
+The Titanic dataset contains information about passengers aboard the Titanic ship, which sank in 1912.
+
+It is commonly used for practising data analysis and machine learning classification.
+
+Important attributes:
+Attribute	Description
+PassengerId	Unique passenger ID
+Survived	Whether passenger survived (0 or 1)
+Pclass	Passenger class (1, 2, 3)
+Name	Passenger name
+Sex	Gender
+Age	Passenger age
+SibSp	Number of siblings/spouses aboard
+Parch	Number of parents/children aboard
+Ticket	Ticket number
+Fare	Ticket fare
+Cabin	Cabin number
+Embarked	Port of embarkation
+
+
+Target variable: Survived
+- 0 = Did not survive
+- 1 = Survived
+4. Important Feature Engineering Techniques
+A. Handling Missing Values
+Missing values are empty or unavailable values in a dataset.
+
+Why is it required?
+- Missing data can affect machine learning model performance.
+- Some algorithms cannot directly handle missing values.
+- It helps maintain data quality.
+Common techniques:
+1. Mean: Replace missing values with the average.
+2. Median: Replace missing values with the middle value.
+3. Mode: Replace missing values with the most frequent value.
+4. Drop: Remove rows or columns containing missing values.
+Titanic example:
+- Age: Replace missing values using median.
+- Embarked: Replace missing values using mode.
+B. Encoding Categorical Variables
+Encoding is the process of converting categorical data into numerical form.
+
+Machine learning algorithms generally require numerical input.
+
+Types of Encoding:
+1. Label Encoding: Assigns a numerical value to each category.
+2. One-Hot Encoding: Creates separate binary columns for each category.
+Example:
+Gender	Encoded Value
+Male	1
+Female	0
+
+
+C. Feature Scaling
+Feature scaling is the process of bringing numerical features into a similar range.
+
+Why is it required?
+- Prevents features with large values from dominating distance-based calculations.
+- Improves the performance of certain algorithms.
+- Helps algorithms converge faster.
+Common techniques:
+1. Standardization: Transforms data to have a mean of 0 and standard deviation of 1.
+2. Normalization: Scales values into a fixed range, usually 0 to 1.
+5. Important Python Libraries
+Library	Purpose
+Pandas	Data manipulation and analysis
+NumPy	Numerical calculations
+Matplotlib	Data visualization
+Seaborn	Statistical data visualization
+Scikit-learn	Machine learning and preprocessing
+
+
+6. Important Functions
+Function	Purpose
+read_csv()	Reads a CSV dataset
+head()	Displays first five rows
+shape	Returns rows and columns
+info()	Displays dataset information
+isnull()	Checks missing values
+sum()	Calculates total values
+fillna()	Replaces missing values
+dropna()	Removes missing values
+LabelEncoder()	Converts categories into numerical labels
+get_dummies()	Performs one-hot encoding
+StandardScaler()	Performs standardization
+MinMaxScaler()	Performs normalization
+
+
+7. Important Viva Questions with Answers
+Basic Questions
+Q1. What is Machine Learning?
+
+Machine Learning is a branch of Artificial Intelligence that enables computers to learn from data and make predictions without being explicitly programmed for every task.
+
+Q2. What is Feature Engineering?
+
+Feature Engineering is the process of transforming raw data into useful features to improve machine learning performance.
+
+Q3. What is a dataset?
+
+A dataset is a collection of related data arranged in rows and columns.
+
+Q4. What is a feature?
+
+A feature is an individual input variable or column in a dataset.
+
+Q5. What is a target variable?
+
+A target variable is the output that a machine learning model tries to predict.
+
+Q6. What is the target variable in the Titanic dataset?
+
+The target variable is Survived.
+
+Q7. What is the difference between features and labels?
+
+Features are input variables, whereas labels are the expected output variables.
+Intermediate Questions
+Q8. Why do we handle missing values?
+
+To avoid errors, maintain data quality, and improve model performance.
+
+Q9. What is the difference between mean and median?
+- Mean is the average of all values.
+- Median is the middle value after arranging the values in order.
+Q10. When should we use median instead of mean?
+
+We use median when data contains outliers or is highly skewed.
+
+Q11. What is categorical data?
+
+Categorical data represents groups or categories, such as gender, city, or department.
+
+Q12. Why is encoding required?
+
+Encoding converts categorical values into numerical values that machine learning algorithms can process.
+
+Q13. What is Label Encoding?
+
+Label Encoding assigns a unique numerical value to each category.
+
+Q14. What is One-Hot Encoding?
+
+One-Hot Encoding creates separate binary columns for each category.
+
+Q15. What is the difference between Label Encoding and One-Hot Encoding?
+
+Label Encoding assigns numerical labels, whereas One-Hot Encoding creates separate binary columns.
+
+Q16. What is Feature Scaling?
+
+Feature Scaling brings numerical features into a similar range.
+
+Q17. What is Standardization?
+
+Standardization transforms data so that its mean becomes 0 and standard deviation becomes 1.
+
+Q18. What is Normalization?
+
+Normalization scales numerical values into a fixed range, usually between 0 and 1.
+Tricky Questions
+Q19. What is an outlier?
+
+An outlier is a data value that is significantly different from other observations.
+
+Q20. What happens if we do not handle missing values?
+
+It may cause errors or affect the accuracy and reliability of a machine learning model.
+
+Q21. Does feature scaling change the original relationship between features?
+
+Scaling changes the numerical representation but generally preserves the relative ordering of values.
+
+Q22. Is feature scaling required for every machine learning algorithm?
+
+No. Algorithms such as KNN, SVM, and K-Means are sensitive to feature scaling, while decision trees and random forests generally do not require it.
+
+Q23. What is data preprocessing?
+
+Data preprocessing is the process of cleaning and transforming raw data into a suitable format for machine learning.
+
+Q24. What is the difference between fit() and transform()?
+- fit() learns the required parameters from the data.
+- transform() applies the learned transformation to the data.
+Q25. What is fit_transform()?
+
+It performs both fitting and transformation in a single step.
+
+Q26. What is data leakage?
+
+Data leakage occurs when information from the test dataset or future data unintentionally influences model training.
+
+Q27. Why should we split data into training and testing datasets?
+
+Training data is used to train the model, while testing data is used to evaluate its performance on unseen data.
+
+Q28. What is the difference between supervised and unsupervised learning?
+- Supervised learning uses labelled data.
+- Unsupervised learning uses unlabelled data.
+Q29. Which type of machine learning problem is Titanic survival prediction?
+
+It is a supervised learning classification problem because the model predicts whether a passenger survived or not.
+
+Q30. Why is the Titanic dataset popular?
+
+It is a beginner-friendly dataset containing numerical and categorical features, missing values, and a classification target.
+8. Important Differences to Remember
+Mean	Median
+Average of values	Middle value
+Affected by outliers	Less affected by outliers
+Used for relatively symmetric data	Useful for skewed data
+
+
+Normalization	Standardization
+Usually scales values between 0 and 1	Mean becomes 0
+Uses minimum and maximum values	Uses mean and standard deviation
+Also called Min-Max Scaling	Also called Z-score Scaling
+
+
+9. Most Important Questions for Tomorrow
+If you have limited preparation time, prioritize these:
+1. What is Feature Engineering?
+2. What is data preprocessing?
+3. What is the Titanic dataset?
+4. What is a feature and target variable?
+5. Why do we handle missing values?
+6. Difference between mean, median and mode.
+7. What is Label Encoding?
+8. What is One-Hot Encoding?
+9. Difference between encoding techniques.
+10. What is Feature Scaling?
+11. Difference between normalization and standardization.
+12. What is fit_transform()?
+13. What is data leakage?
+14. Why is scaling required?
+15. What type of ML problem is Titanic survival prediction?

@@ -1,0 +1,241 @@
+Practical 9: DBSCAN Clustering
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.cluster import DBSCAN
+from sklearn.preprocessing import StandardScaler
+
+df = pd.read_csv(r"make_moons.csv")
+
+X = df[["Feature_1", "Feature_2"]]
+X = StandardScaler().fit_transform(X)
+
+model = DBSCAN(eps=0.5, min_samples=5)
+df["Cluster"] = model.fit_predict(X)
+
+print(df)
+
+clusters = df["Cluster"].nunique()
+if -1 in df["Cluster"].values:
+    clusters -= 1
+
+print("Number of Clusters:", clusters)
+print("Noise Points:", list(df["Cluster"]).count(-1))
+
+plt.scatter(X[:, 0], X[:, 1], c=df["Cluster"], cmap="rainbow")
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.title("DBSCAN Clustering")
+plt.show()
+
+
+
+
+
+
+///////
+Practical 9: DBSCAN Clustering
+1. Aim
+To employ a density-based clustering algorithm such as DBSCAN on a suitable open-access dataset to identify the clustering structure and noise points.
+2. What is DBSCAN?
+DBSCAN stands for Density-Based Spatial Clustering of Applications with Noise.
+
+It is an unsupervised machine learning algorithm that groups closely packed data points into clusters and identifies isolated points as noise or outliers.
+
+Example: Grouping customers based on similar purchasing patterns and identifying unusual customers.
+3. What is Density-Based Clustering?
+Density-based clustering groups data points according to how closely they are located to one another.
+- High-density regions form clusters.
+- Low-density regions are treated as noise.
+- Clusters can have irregular shapes.
+4. Important Parameters of DBSCAN
+DBSCAN mainly uses two parameters:
+
+1. Epsilon (eps)
+
+It specifies the maximum distance between two points for them to be considered neighbours.
+- Small eps → More points may be classified as noise.
+- Large eps → More points may be included in clusters.
+2. Min_samples
+
+It specifies the minimum number of neighbouring points required to form a dense region.
+- High Min_samples → More points are likely to be classified as noise.
+- Low Min_samples → Clusters can form with fewer points.
+5. Types of Points in DBSCAN
+DBSCAN classifies data points into three types:
+
+1. Core Point
+- A point having at least Min_samples points within its eps neighbourhood.
+- It lies in a dense region.
+2. Border Point
+- A point that has fewer than Min_samples neighbours within its own eps neighbourhood.
+- It lies within the eps neighbourhood of a core point.
+3. Noise Point
+- A point that is neither a core point nor a border point.
+- It does not belong to any cluster.
+6. How DBSCAN Works
+1. Load a suitable dataset.
+2. Select the required numerical features.
+3. Standardize the features.
+4. Set the eps and Min_samples parameters.
+5. Calculate the neighbourhood of each data point.
+6. Identify core points.
+7. Form clusters by connecting density-reachable points.
+8. Mark points that do not belong to any cluster as noise.
+9. Visualize the clusters and noise points.
+7. Important Libraries and Functions
+Library / Function	Purpose
+pandas	Data handling
+numpy	Numerical calculations
+matplotlib.pyplot	Data visualization
+StandardScaler()	Feature scaling
+DBSCAN()	Creates DBSCAN model
+fit()	Trains the clustering model
+fit_predict()	Performs clustering and returns labels
+labels_	Returns assigned cluster labels
+unique()	Finds unique cluster labels
+
+
+8. How to Identify Noise Points?
+DBSCAN assigns the label -1 to noise points.
+
+For example:
+Label	Meaning
+0	Cluster 1
+1	Cluster 2
+2	Cluster 3
+-1	Noise / Outlier
+
+
+The cluster labels are simply identifiers. Label 0 does not mean better than label 1.
+9. Suitable Open-Access Datasets
+Examples:
+- Iris Dataset
+- Mall Customer Segmentation Dataset
+- Wine Dataset
+- Make Moons Dataset
+Note: DBSCAN works particularly well on datasets with dense groups separated by low-density regions. The choice of dataset and parameters affects the clustering result.
+10. Advantages of DBSCAN
+- Does not require the number of clusters in advance.
+- Can identify noise and outliers.
+- Can detect clusters of irregular shapes.
+- Does not require initial centroid positions.
+- Useful for spatial and geographical data.
+11. Limitations of DBSCAN
+- Choosing eps and Min_samples can be difficult.
+- Sensitive to feature scaling.
+- May struggle when clusters have significantly different densities.
+- Performance can decrease in high-dimensional datasets.
+- Results depend heavily on parameter selection.
+Important Viva Questions and Answers
+Q1. What is DBSCAN?
+DBSCAN is an unsupervised clustering algorithm that groups closely packed data points and identifies noise points.
+
+Q2. What is the full form of DBSCAN?
+Density-Based Spatial Clustering of Applications with Noise.
+
+Q3. Is DBSCAN supervised or unsupervised?
+Unsupervised learning.
+
+Q4. What is the main purpose of DBSCAN?
+To identify dense clusters and detect noise or outliers.
+
+Q5. Which two main parameters are used in DBSCAN?
+Epsilon (eps) and Min_samples.
+
+Q6. What is eps?
+It is the maximum distance used to identify neighbouring points.
+
+Q7. What is Min_samples?
+It is the minimum number of points required in an eps neighbourhood for a point to be considered a core point.
+
+Q8. What is a core point?
+A point that has at least Min_samples points in its eps neighbourhood, including itself.
+
+Q9. What is a border point?
+A point that has fewer than Min_samples points in its own eps neighbourhood but lies within the neighbourhood of a core point.
+
+Q10. What is a noise point?
+A point that does not belong to any cluster.
+
+Q11. How does DBSCAN represent noise points?
+It assigns the label -1.
+
+Q12. Does DBSCAN require the number of clusters in advance?
+No.
+
+Q13. What happens when eps is too small?
+Many points may be classified as noise, and clusters may break into smaller groups.
+
+Q14. What happens when eps is too large?
+Different clusters may merge into one large cluster.
+
+Q15. What happens when Min_samples is increased?
+A higher density is required to form clusters, so more points may become noise.
+
+Q16. Why is feature scaling important in DBSCAN?
+Because DBSCAN uses distance calculations, and features with larger scales can dominate the distance.
+
+Q17. Which distance metric is commonly used in DBSCAN?
+Euclidean Distance.
+
+Q18. Which Python library provides DBSCAN?
+Scikit-learn.
+
+Q19. Which function is used to implement DBSCAN?
+DBSCAN() from sklearn.cluster.
+
+Q20. What is the use of fit_predict()?
+It performs clustering and returns a cluster label for every data point.
+
+Q21. Can DBSCAN identify outliers?
+Yes. It identifies isolated points as noise.
+
+Q22. Can DBSCAN find irregularly shaped clusters?
+Yes. It can identify clusters with irregular shapes.
+
+Q23. What is the difference between K-Means and DBSCAN?
+K-Means divides data into a predefined number of clusters, while DBSCAN identifies clusters based on density and does not require K in advance.
+
+Q24. Does DBSCAN use centroids?
+No. It forms clusters based on the density and neighbourhood of data points.
+
+Q25. What is density reachability?
+A point is density-reachable from another point if it can be connected through a chain of neighbouring core points.
+
+Q26. What is an outlier?
+An outlier is a data point that is significantly different from the general pattern of the dataset.
+
+Q27. Can DBSCAN work with high-dimensional data?
+It can, but its performance may decrease because distance measurements become less meaningful in high dimensions.
+
+Q28. What is the main advantage of DBSCAN over K-Means?
+DBSCAN can detect noise and irregularly shaped clusters without requiring the number of clusters beforehand.
+Important Comparison: K-Means vs DBSCAN
+Basis	K-Means	DBSCAN
+Learning type	Unsupervised	Unsupervised
+Clustering approach	Centroid-based	Density-based
+Number of clusters	Must be specified	Not required
+Noise detection	Not directly	Yes
+Cluster shape	Works best with roughly spherical clusters	Can detect irregular shapes
+Main parameters	K	eps and Min_samples
+Outlier sensitivity	Sensitive to outliers	Can identify noise points
+Centroids	Uses centroids	Does not use centroids
+
+
+Most Important Points to Remember
+Topic	Answer
+Full form	Density-Based Spatial Clustering of Applications with Noise
+Learning type	Unsupervised
+Main purpose	Clustering and noise detection
+Main parameters	eps and Min_samples
+Core point	Point in a dense region
+Border point	Point near a core point
+Noise point	Point not belonging to any cluster
+Noise label	-1
+Distance metric	Euclidean (commonly used)
+Python class	DBSCAN()
+Main library	Scikit-learn
+
+
+DBSCAN vs K-Means: One-line viva answer
+K-Means forms clusters around centroids, whereas DBSCAN forms clusters based on the density of neighbouring data points and can identify noise points.

@@ -1,0 +1,266 @@
+Practical 8: K-Means Clustering
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+
+df = pd.read_csv(r"Mall_Customers.csv")
+
+X = df[["Annual Income (k$)", "Spending Score (1-100)"]]
+X = StandardScaler().fit_transform(X)
+
+# Elbow Method
+wcss = []
+
+for k in range(1, 11):
+    model = KMeans(n_clusters=k, random_state=42, n_init=10)
+    model.fit(X)
+    wcss.append(model.inertia_)
+
+plt.plot(range(1, 11), wcss, marker="o")
+plt.xlabel("Number of Clusters")
+plt.ylabel("WCSS")
+plt.title("Elbow Method")
+plt.show()
+
+kmeans = KMeans(n_clusters=5, random_state=42, n_init=10)
+df["Cluster"] = kmeans.fit_predict(X)
+
+print(df.head(10))
+print("\nNumber of Clusters:", df["Cluster"].nunique())
+
+plt.scatter(X[:, 0], X[:, 1], c=df["Cluster"], cmap="rainbow")
+plt.xlabel("Annual Income")
+plt.ylabel("Spending Score")
+plt.title("Customer Segmentation using K-Means")
+plt.show()
+
+
+
+
+
+
+
+\\\\\\
+Practical 8: K-Means Clustering
+1. Aim
+To apply the K-Means clustering algorithm on a suitable open-access dataset and determine the optimal number of clusters using the Elbow Method or Silhouette Method.
+2. What is Clustering?
+Clustering is an unsupervised machine learning technique used to group similar data points into clusters.
+
+Data points within the same cluster are more similar to each other than to data points in other clusters.
+
+Example: Grouping customers based on their purchasing behaviour.
+3. What is K-Means Clustering?
+K-Means is an unsupervised machine learning algorithm that divides a dataset into K different clusters based on similarity.
+
+Here, K represents the number of clusters.
+
+The algorithm assigns each data point to the nearest cluster centre (centroid).
+4. How K-Means Works
+1. Select the number of clusters (K).
+2. Initialize K cluster centroids.
+3. Calculate the distance between each data point and the centroids.
+4. Assign each data point to its nearest centroid.
+5. Recalculate the centroid of each cluster.
+6. Repeat the process until the centroids stop changing significantly.
+5. Important Terms
+1. Centroid:
+The centre point of a cluster, calculated using the mean of the data points belonging to that cluster.
+
+2. Cluster:
+A group of similar data points.
+
+3. Euclidean Distance:
+A distance measurement used to calculate how far two data points are from each other.
+
+4. K Value:
+The number of clusters to be created.
+
+5. Inertia:
+The sum of squared distances between data points and their assigned cluster centroids.
+6. Methods to Find the Optimal Number of Clusters
+The main challenge in K-Means is selecting the correct value of K.
+
+Two commonly used methods are:
+A. Elbow Method
+The Elbow Method helps determine the optimal number of clusters by calculating the inertia for different K values.
+
+Steps:
+1. Run K-Means with different K values.
+2. Calculate inertia for each K.
+3. Plot K values against inertia.
+4. Identify the point where the decrease in inertia starts becoming slower.
+5. Select that point as the approximate optimal K.
+Why is it called the Elbow Method?
+
+Because the graph looks like a human elbow, where the curve changes direction.
+
+Important: Inertia always decreases or stays the same as K increases. We look for the point where adding more clusters gives diminishing improvement.
+B. Silhouette Method
+The Silhouette Method measures how well each data point fits within its assigned cluster compared with other clusters.
+
+Its score ranges from -1 to +1.
+Score	Meaning
+Close to +1	Data point is well clustered
+Around 0	Data point may lie between clusters
+Close to -1	Data point may be assigned to the wrong cluster
+
+
+Formula:
+\[
+S=\frac{b-a}{\max(a,b)}
+\]
+Where:
+- a: Average distance between a data point and other points in the same cluster.
+- b: Average distance between a data point and points in the nearest different cluster.
+How to select K?
+
+Calculate the average Silhouette Score for different K values. The K with the highest average score is generally preferred.
+7. Important Libraries and Functions
+Library / Function	Purpose
+pandas	Data handling
+numpy	Numerical calculations
+matplotlib.pyplot	Data visualization
+StandardScaler()	Feature scaling
+KMeans()	Creates K-Means model
+fit()	Trains the clustering model
+predict()	Assigns clusters to new data
+fit_predict()	Trains and returns cluster labels
+inertia_	Returns sum of squared distances to centroids
+silhouette_score()	Calculates Silhouette Score
+range()	Tests different K values
+
+
+8. Suitable Datasets
+Examples of open-access datasets used for K-Means:
+- Iris Dataset
+- Mall Customer Segmentation Dataset
+- Wine Dataset
+- Wholesale Customers Dataset
+Example: The Mall Customer Segmentation dataset can be used to group customers based on annual income and spending score.
+9. Advantages of K-Means
+- Simple and easy to implement.
+- Fast and computationally efficient.
+- Works well with large datasets.
+- Easy to understand and interpret.
+- Useful for customer segmentation.
+10. Limitations of K-Means
+- Requires the number of clusters (K) in advance.
+- Sensitive to initial centroid positions.
+- Sensitive to outliers.
+- Works best with roughly spherical and similarly sized clusters.
+- Feature scaling is generally important.
+Important Viva Questions and Answers
+Q1. What is K-Means Clustering?
+K-Means is an unsupervised learning algorithm that divides data into K clusters based on similarity.
+
+Q2. Is K-Means supervised or unsupervised?
+Unsupervised learning.
+
+Q3. Why is it called K-Means?
+Because it divides data into K clusters and calculates the mean of each cluster to determine its centroid.
+
+Q4. What does K represent?
+K represents the number of clusters.
+
+Q5. What is a centroid?
+A centroid is the centre of a cluster, calculated using the mean of its data points.
+
+Q6. What is the main objective of K-Means?
+To minimize the sum of squared distances between data points and their assigned cluster centroids.
+
+Q7. What is Euclidean Distance?
+It is the straight-line distance between two points.
+
+Q8. What is the Elbow Method?
+It is a technique used to find the optimal number of clusters by plotting inertia against different K values.
+
+Q9. Why is it called the Elbow Method?
+Because the graph resembles an elbow at the point where the improvement starts decreasing.
+
+Q10. What is inertia?
+Inertia is the sum of squared distances between data points and their assigned cluster centroids.
+
+Q11. What happens when K increases?
+Inertia generally decreases because more clusters allow data points to be closer to their centroids.
+
+Q12. What is the Silhouette Method?
+It evaluates how well data points fit within their assigned clusters.
+
+Q13. What is the range of the Silhouette Score?
+-1 to +1.
+
+Q14. What does a Silhouette Score close to +1 indicate?
+It indicates that data points are well matched to their own clusters and separated from other clusters.
+
+Q15. What does a Silhouette Score close to zero indicate?
+It indicates that data points may lie near the boundary between two clusters.
+
+Q16. Which method is better: Elbow or Silhouette?
+Both are useful. The Elbow Method uses inertia, while the Silhouette Method evaluates cluster quality and separation.
+
+Q17. Why do we use StandardScaler?
+To bring features to a comparable scale so that larger-valued features do not dominate distance calculations.
+
+Q18. Can K-Means work without labelled data?
+Yes. It is an unsupervised algorithm and does not require target labels.
+
+Q19. Is K-Means suitable for categorical data?
+Not directly. It is mainly designed for numerical data.
+
+Q20. What is the difference between classification and clustering?
+Classification uses labelled data to predict predefined classes, while clustering groups unlabelled data based on similarity.
+
+Q21. What is the role of random_state?
+It makes the random initialization reproducible.
+
+Q22. What is the role of n_init?
+It specifies how many times K-Means runs with different centroid initializations. The best result is selected.
+
+Q23. What is the role of max_iter?
+It specifies the maximum number of iterations allowed for one run.
+
+Q24. What is the role of fit_predict()?
+It trains the K-Means model and returns the cluster labels for the input data.
+
+Q25. Give some real-world applications of K-Means.
+Customer segmentation, image compression, document grouping, and market analysis.
+Important Comparisons
+Elbow Method vs Silhouette Method
+Basis	Elbow Method	Silhouette Method
+Purpose	Finds approximate optimal K	Evaluates cluster quality
+Based on	Inertia	Silhouette Score
+Graph	K vs Inertia	K vs Silhouette Score
+Selection	Point where improvement slows	K with highest average score
+Range	No fixed range	-1 to +1
+
+
+Classification vs Clustering
+Classification	Clustering
+Supervised learning	Unsupervised learning
+Uses labelled data	Uses unlabelled data
+Predicts predefined classes	Discovers groups
+Example: Spam detection	Example: Customer segmentation
+
+
+Most Important Points to Remember
+Topic	Answer
+Algorithm	K-Means
+Learning type	Unsupervised
+Main purpose	Group similar data points
+K	Number of clusters
+Cluster centre	Centroid
+Distance measure	Euclidean Distance
+Elbow Method	Uses inertia
+Silhouette Method	Uses Silhouette Score
+Silhouette range	-1 to +1
+Feature scaling	Generally required
+Python class	KMeans()
+Main library	Scikit-learn
+
+
+Viva tip: Remember these three points clearly:
+1. K-Means is an unsupervised learning algorithm.
+2. Elbow Method uses inertia to find an approximate optimal K.
+3. Silhouette Method uses a score between -1 and +1 to evaluate cluster quality.

@@ -1,0 +1,361 @@
+Practical 3: Multiple Linear Regression
+
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error, r2_score
+
+df = pd.read_csv(r"add california housing csv file path here")
+
+X = df.drop("MedHouseVal", axis=1)
+y = df["MedHouseVal"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+
+mse = mean_squared_error(y_test, y_pred)
+rmse = np.sqrt(mse)
+r2 = r2_score(y_test, y_pred)
+
+print("Results Of Model Evaluation: \n")
+print("Mean Squared Error (MSE):", mse)
+print("Root Mean Squared Error (RMSE):", rmse)
+print("R2 Score:", r2)
+
+
+
+
+
+
+
+\\\\\\\\
+Practical 3: Multiple Linear Regression
+Algorithm: Multiple Linear Regression (MLR)
+1. Aim of the Practical
+To develop a Multiple Linear Regression model using a suitable real-world open-access dataset and evaluate its predictive performance using regression evaluation metrics such as Mean Squared Error (MSE), Root Mean Squared Error (RMSE), and R-squared (R²).
+2. What is Linear Regression?
+Linear Regression is a supervised machine learning algorithm used to predict continuous numerical values by identifying the relationship between input variables and an output variable.
+
+Example:
+Predicting the price of a house based on its area, number of bedrooms, and location-related numerical attributes.
+3. What is Multiple Linear Regression?
+Multiple Linear Regression is a statistical and machine learning technique used to predict one dependent variable using two or more independent variables.
+
+Example:
+
+Predicting house prices using:
+- Area of the house
+- Number of bedrooms
+- Number of bathrooms
+- Age of the house
+Here, house price is the dependent variable, and the remaining variables are independent variables.
+4. Mathematical Formula
+The general equation of Multiple Linear Regression is:
+\[
+Y=b_0+b_1X_1+b_2X_2+\cdots+b_nX_n
+\]
+Where:
+Symbol	Meaning
+Y	Predicted output
+b₀	Intercept
+b₁, b₂...	Regression coefficients
+X₁, X₂...	Independent variables
+n	Number of independent variables
+
+
+Simple example:
+
+House Price = 500000 + 2000 × Area + 100000 × Bedrooms
+
+The model uses multiple input variables to predict the house price.
+5. How Does Multiple Linear Regression Work?
+The algorithm generally follows these steps:
+1. Load the dataset.
+2. Identify independent and dependent variables.
+3. Preprocess the dataset.
+4. Split the data into training and testing sets.
+5. Train the regression model.
+6. Predict output values.
+7. Compare actual and predicted values.
+8. Evaluate the model using MSE, RMSE and R².
+6. Important Terminology
+Term	Meaning
+Regression	Predicting continuous numerical values
+Dependent Variable	Variable to be predicted
+Independent Variable	Input variable used for prediction
+Intercept	Predicted value when all inputs are zero
+Coefficient	Indicates the relationship between an input and output
+Residual	Difference between actual and predicted values
+Training Data	Data used to train the model
+Testing Data	Data used to evaluate the model
+
+
+7. Regression Evaluation Metrics
+These three metrics are particularly important for your viva.
+A. Mean Squared Error (MSE)
+MSE measures the average squared difference between actual and predicted values.
+
+Formula:
+\[
+MSE=\frac{1}{n}\sum_{i=1}^{n}(Y_i-\hat{Y_i})^2
+\]
+Where:
+- \(Y_i\) = Actual value
+- \(\hat{Y_i}\) = Predicted value
+- n = Number of observations
+Important points:
+- Lower MSE indicates better predictions.
+- It penalizes large errors more heavily.
+- Its unit is the square of the target variable's unit.
+B. Root Mean Squared Error (RMSE)
+RMSE is the square root of Mean Squared Error.
+
+Formula:
+\[
+RMSE=\sqrt{MSE}
+\]
+Important points:
+- Lower RMSE indicates better predictions.
+- It is expressed in the same unit as the target variable.
+- It is sensitive to large prediction errors.
+C. R-squared (R²)
+R-squared measures how much variation in the dependent variable is explained by the regression model.
+
+Formula:
+\[
+R^2=1-\frac{SS_{res}}{SS_{tot}}
+\]
+Important points:
+- R² = 1 means perfect predictions.
+- R² = 0 means the model performs like predicting the mean of the target values.
+- R² can also be negative if the model performs worse than that baseline.
+Example of Evaluation Metrics
+Suppose the model produces:
+Metric	Example Value	Interpretation
+MSE	100	Average squared error
+RMSE	10	Typical error scale
+R²	0.85	Model explains 85% of target variation
+
+
+These are illustrative values, not actual experimental results.
+8. Important Python Libraries
+Library	Purpose
+NumPy	Numerical calculations
+Pandas	Data manipulation
+Matplotlib	Data visualization
+Seaborn	Statistical visualization
+Scikit-learn	Machine learning
+LinearRegression	Creates regression model
+train_test_split	Splits dataset
+mean_squared_error	Calculates MSE
+r2_score	Calculates R²
+
+
+9. Important Python Functions
+Function	Purpose
+read_csv()	Loads CSV dataset
+head()	Displays first five rows
+shape	Returns rows and columns
+describe()	Provides statistical summary
+train_test_split()	Splits data into training and testing sets
+LinearRegression()	Creates regression model
+fit()	Trains the model
+predict()	Predicts output values
+mean_squared_error()	Calculates MSE
+r2_score()	Calculates R²
+sqrt()	Calculates square root
+coef_	Returns regression coefficients
+intercept_	Returns the intercept
+
+
+10. Advantages of Multiple Linear Regression
+1. Easy to understand and implement.
+2. Uses multiple independent variables.
+3. Helps understand relationships between variables.
+4. Requires relatively less computational power.
+5. Provides interpretable coefficients.
+6. Useful for predicting continuous values.
+11. Limitations of Multiple Linear Regression
+1. Assumes a linear relationship between predictors and the target.
+2. Sensitive to outliers.
+3. Multicollinearity can affect coefficient estimates.
+4. Performance may decrease when important variables are missing.
+5. Cannot directly model complex nonlinear relationships.
+12. Important Viva Questions with Answers
+Basic Questions
+Q1. What is regression?
+
+Regression is a supervised machine learning technique used to predict continuous numerical values.
+
+Q2. What is Linear Regression?
+
+Linear Regression is an algorithm that finds a linear relationship between input variables and an output variable.
+
+Q3. What is Multiple Linear Regression?
+
+It is a regression technique that predicts one dependent variable using two or more independent variables.
+
+Q4. What is the difference between Simple and Multiple Linear Regression?
+- Simple Linear Regression uses one independent variable.
+- Multiple Linear Regression uses two or more independent variables.
+Q5. Is Linear Regression supervised or unsupervised?
+
+It is a supervised learning algorithm because it uses labelled data.
+
+Q6. What is a dependent variable?
+
+It is the output variable that we want to predict.
+
+Q7. What is an independent variable?
+
+It is an input variable used to predict the dependent variable.
+
+Q8. Give a real-world example of Multiple Linear Regression.
+
+Predicting house prices using area, bedrooms, bathrooms and age of the house.
+Intermediate Questions
+Q9. What is an intercept?
+
+The intercept is the predicted value of the dependent variable when all independent variables are zero.
+
+Q10. What is a regression coefficient?
+
+A regression coefficient indicates how much the predicted output changes when an independent variable increases by one unit, keeping other variables constant.
+
+Q11. What is MSE?
+
+Mean Squared Error measures the average squared difference between actual and predicted values.
+
+Q12. What is RMSE?
+
+Root Mean Squared Error is the square root of MSE. It measures prediction error in the original unit of the target variable.
+
+Q13. What is R-squared?
+
+R-squared measures the proportion of variation in the target variable explained by the regression model.
+
+Q14. Which is better: lower MSE or higher MSE?
+
+Lower MSE is better because it indicates smaller prediction errors.
+
+Q15. Which is better: lower RMSE or higher RMSE?
+
+Lower RMSE is better.
+
+Q16. What is a good R² score?
+
+An R² closer to 1 generally indicates a better fit, but what is considered good depends on the problem and dataset.
+
+Q17. What is residual?
+
+Residual is the difference between the actual value and predicted value.
+
+Q18. What is the purpose of train_test_split()?
+
+It divides the dataset into training and testing portions.
+
+Q19. What is the purpose of fit()?
+
+It trains the model using the training dataset.
+
+Q20. What is the purpose of predict()?
+
+It generates predicted values using the trained model.
+Tricky Questions
+Q21. Can Linear Regression predict categorical values?
+
+No. It is primarily used to predict continuous numerical values.
+
+Q22. What is overfitting?
+
+Overfitting occurs when a model performs well on training data but poorly on unseen data.
+
+Q23. What is underfitting?
+
+Underfitting occurs when a model is too simple to capture the underlying relationship in the data.
+
+Q24. What is multicollinearity?
+
+Multicollinearity occurs when two or more independent variables are highly correlated with each other.
+
+Q25. What happens if R² is negative?
+
+It means the model performs worse than a baseline model that predicts the mean of the target values, when evaluated on that dataset.
+
+Q26. Can R² be equal to 1?
+
+Yes. It can be 1 when the model perfectly predicts all target values.
+
+Q27. Why do we split data into training and testing sets?
+
+To train the model on one portion and evaluate its performance on unseen data.
+
+Q28. What is the difference between MSE and RMSE?
+
+MSE calculates the average squared error, whereas RMSE is the square root of MSE and is expressed in the original unit.
+
+Q29. Is feature scaling compulsory for Multiple Linear Regression?
+
+No. Ordinary Linear Regression generally does not require feature scaling, although scaling can help with numerical stability or regularized regression.
+
+Q30. What is the main assumption of Multiple Linear Regression?
+
+It assumes a linear relationship between the predictors and the dependent variable.
+13. Important Differences
+MSE vs RMSE vs R²
+MSE	RMSE	R²
+Mean Squared Error	Root Mean Squared Error	R-squared
+Measures squared prediction error	Measures error in original units	Measures explained variation
+Lower is better	Lower is better	Generally higher is better
+Always non-negative	Always non-negative	Can be negative
+
+
+Simple vs Multiple Linear Regression
+Simple Linear Regression	Multiple Linear Regression
+One independent variable	Two or more independent variables
+Simple equation	Multiple input variables
+Easier to visualize	More complex relationship
+Example: Price vs Area	Example: Price vs Area, Bedrooms and Bathrooms
+
+
+14. Most Important Questions for Tomorrow
+Prioritize these 15 questions:
+1. What is Linear Regression?
+2. What is Multiple Linear Regression?
+3. Difference between Simple and Multiple Linear Regression?
+4. What is a dependent variable?
+5. What is an independent variable?
+6. Explain the Multiple Linear Regression equation.
+7. What is an intercept?
+8. What is a regression coefficient?
+9. What is MSE?
+10. What is RMSE?
+11. What is R²?
+12. Difference between MSE and RMSE?
+13. What is multicollinearity?
+14. What is the purpose of fit() and predict()?
+15. What is the difference between regression and classification?
+15. Important Practical Concepts
+Your examiner may specifically ask you to explain the following:
+Concept	What you should know
+Dataset	What data is used for prediction?
+Features (X)	Which columns are input variables?
+Target (Y)	Which column is being predicted?
+Model Training	How does the model learn?
+Prediction	How are new values predicted?
+MSE	How much squared error does the model produce?
+RMSE	What is the prediction error in original units?
+R²	How much target variation does the model explain?
+
+
+Remember these three points:
+- MSE → Lower is better.
+- RMSE → Lower is better.
+- R² → Generally, closer to 1 is better.
+One important distinction: Multiple Linear Regression predicts continuous values, such as house prices, salaries and temperatures. It is not used for directly predicting categories such as Yes/No or Pass/Fail.

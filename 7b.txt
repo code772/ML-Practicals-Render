@@ -1,0 +1,210 @@
+Practical 7(b): Support Vector Machine (SVM) – Nonlinear Kernel
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import SVC
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+
+df = pd.read_csv(r"add california csv file path here")
+
+df["HouseCategory"] = (df["MedHouseVal"] > df["MedHouseVal"].median()).astype(int)
+
+X = df.drop(["MedHouseVal", "HouseCategory"], axis=1)
+y = df["HouseCategory"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42, stratify=y
+)
+
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+linear = SVC(kernel="linear")
+linear.fit(X_train, y_train)
+linear_pred = linear.predict(X_test)
+
+rbf = SVC(kernel="rbf")
+rbf.fit(X_train, y_train)
+rbf_pred = rbf.predict(X_test)
+
+for name, pred in [("Linear Kernel", linear_pred),
+                   ("RBF Kernel", rbf_pred)]:
+
+    print("\n", name)
+    print("Accuracy:", accuracy_score(y_test, pred))
+    print("Precision:", precision_score(y_test, pred))
+    print("Recall:", recall_score(y_test, pred))
+    print("F1 Score:", f1_score(y_test, pred))
+
+cm = confusion_matrix(y_test, rbf_pred)
+print("\nConfusion Matrix: ")
+print(cm)
+
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.title("SVM - RBF Kernel Confusion Matrix")
+plt.show()
+
+
+
+
+
+
+///////
+Practical 7(b): Support Vector Machine (SVM) – Nonlinear Kernel
+1. Aim
+To implement an SVM classifier using a Nonlinear Kernel on a suitable open-access dataset and compare its classification performance with the Linear Kernel.
+2. What is a Nonlinear Kernel?
+A Nonlinear Kernel is used when data cannot be separated effectively using a straight line or flat hyperplane in the original feature space.
+
+It allows SVM to create more complex decision boundaries.
+
+Example: If data points are arranged in circular patterns, a straight line may not separate the classes properly. A nonlinear kernel can handle such patterns.
+3. Types of Nonlinear Kernels
+1. RBF (Radial Basis Function) Kernel
+- Most commonly used nonlinear kernel.
+- Can create flexible decision boundaries.
+- Useful for complex datasets.
+2. Polynomial Kernel
+- Creates curved decision boundaries.
+- Uses polynomial relationships between features.
+3. Sigmoid Kernel
+- Uses a sigmoid function.
+- Similar in form to an activation function used in neural networks.
+4. RBF Kernel Formula
+\[
+K(x,y)=e^{-\gamma ||x-y||^2}
+\]
+Where:
+- K(x,y): Kernel similarity.
+- x and y: Two data points.
+- γ (Gamma): Controls the influence of individual training points.
+Gamma interpretation:
+- High gamma → More complex and localized decision boundary; may overfit.
+- Low gamma → Smoother decision boundary; may underfit.
+5. How Nonlinear SVM Works
+1. Load a suitable dataset.
+2. Separate input features and target variable.
+3. Split the dataset into training and testing sets.
+4. Standardize the features.
+5. Create an SVM model using a nonlinear kernel, such as RBF.
+6. Train the model.
+7. Predict the output.
+8. Evaluate the model using classification metrics.
+9. Compare its performance with Linear SVM.
+6. Important Libraries and Functions
+Library / Function	Purpose
+pandas	Data handling
+numpy	Numerical calculations
+train_test_split()	Splits dataset
+StandardScaler()	Scales features
+SVC()	Creates SVM classifier
+kernel='rbf'	Selects RBF Kernel
+fit()	Trains the model
+predict()	Predicts output
+accuracy_score()	Calculates accuracy
+confusion_matrix()	Generates confusion matrix
+classification_report()	Displays classification metrics
+
+
+7. Advantages
+- Handles complex nonlinear datasets.
+- Creates flexible decision boundaries.
+- Useful when Linear SVM performs poorly.
+- Can provide good classification performance with suitable parameters.
+8. Limitations
+- Requires careful parameter tuning.
+- Can overfit with unsuitable gamma and C values.
+- Training can be slow on large datasets.
+- Results can be difficult to interpret.
+9. Viva Questions and Answers
+Q1. What is a Nonlinear Kernel?
+It allows SVM to create complex decision boundaries for data that cannot be separated effectively using a straight line.
+
+Q2. Why do we use nonlinear kernels?
+We use them when the data has complex patterns that a linear decision boundary cannot separate properly.
+
+Q3. Name three nonlinear kernels.
+RBF, Polynomial and Sigmoid.
+
+Q4. Which nonlinear kernel is commonly used?
+RBF (Radial Basis Function).
+
+Q5. What is RBF Kernel?
+It is a nonlinear kernel that measures similarity between data points based on their distance.
+
+Q6. What is Gamma?
+Gamma controls how far the influence of a training point reaches.
+
+Q7. What happens when Gamma is high?
+The decision boundary becomes more complex and may overfit.
+
+Q8. What happens when Gamma is low?
+The decision boundary becomes smoother and may underfit.
+
+Q9. What is the difference between Linear and Nonlinear SVM?
+Linear SVM uses a straight decision boundary, while Nonlinear SVM can create curved and complex boundaries.
+
+Q10. Can SVM handle high-dimensional data?
+Yes. SVM is effective in high-dimensional feature spaces.
+
+Q11. What is the kernel trick?
+It allows SVM to work with nonlinear relationships by computing similarities as if data were mapped into a higher-dimensional feature space, without explicitly performing that mapping.
+
+Q12. Does a nonlinear kernel always perform better than a linear kernel?
+No. Performance depends on the dataset and parameter selection.
+
+Q13. What is overfitting in SVM?
+It occurs when the model learns training data too closely and performs poorly on unseen data.
+
+Q14. What is the difference between C and Gamma?
+C controls the penalty for classification errors, while Gamma controls the influence of individual training points in kernels such as RBF.
+
+Q15. Which kernel is suitable for complex datasets?
+RBF is a common choice for complex nonlinear datasets.
+Important Comparison: Linear SVM vs Nonlinear SVM
+Basis	Linear SVM	Nonlinear SVM
+Decision boundary	Straight/flat	Curved or complex
+Kernel	Linear	RBF, Polynomial, Sigmoid
+Dataset	Approximately linearly separable	Nonlinearly separable
+Complexity	Usually simpler	Usually more complex
+Training time	Often faster	Can be slower
+Parameter tuning	Mainly C	C and kernel-specific parameters such as Gamma
+Overfitting	Possible	Possible, especially with unsuitable parameters
+
+
+Other Important Comparison
+Linear Kernel	RBF Kernel
+Uses linear relationships	Handles nonlinear relationships
+No Gamma parameter	Uses Gamma parameter
+Simpler decision boundary	Flexible decision boundary
+Useful for linearly separable data	Useful for complex data
+
+
+Most Important Points to Remember
+Question	Answer
+Full form	Support Vector Machine
+Learning type	Supervised
+Main purpose	Classification
+Decision boundary	Hyperplane
+Important data points	Support Vectors
+Distance from boundary	Margin
+Linear kernel	Straight decision boundary
+Common nonlinear kernel	RBF
+C parameter	Controls error penalty
+Gamma	Controls influence of training points
+Python function	SVC()
+Feature scaling	Generally important
+Evaluation metrics	Accuracy, Precision, Recall, F1-score
+
+
+Important practical observation
+When comparing Linear and Nonlinear SVM, remember:
+- If Linear SVM gives better test performance, the dataset may be sufficiently well represented by a linear boundary.
+- If RBF SVM gives better test performance, nonlinear patterns may be important.
+- If training performance is high but test performance is low, the model may be overfitting.
+Viva tip: Be prepared to explain the difference between C and Gamma, the meaning of support vectors, and why feature scaling is important in SVM.

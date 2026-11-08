@@ -1,0 +1,228 @@
+Practical 5(b): Lasso Regression
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LinearRegression, Lasso
+from sklearn.metrics import mean_squared_error, r2_score
+
+df = pd.read_csv(r"add california csv file path here")
+
+X = df.drop("MedHouseVal", axis=1)
+y = df["MedHouseVal"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+scaler = StandardScaler()
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+y_pred = model.predict(X_test)
+
+lasso = Lasso(alpha=0.1)
+lasso.fit(X_train, y_train)
+lasso_pred = lasso.predict(X_test)
+
+print("Linear Regression")
+print("MSE:", mean_squared_error(y_test, y_pred))
+print("RMSE:", np.sqrt(mean_squared_error(y_test, y_pred)))
+print("R2 Score:", r2_score(y_test, y_pred))
+
+print("\nLasso Regression")
+print("MSE:", mean_squared_error(y_test, lasso_pred))
+print("RMSE:", np.sqrt(mean_squared_error(y_test, lasso_pred)))
+print("R2 Score:", r2_score(y_test, lasso_pred))
+
+print("\nSelected Features:")
+print(X.columns[lasso.coef_ != 0].tolist())
+
+plt.figure(figsize=(10, 6))
+plt.scatter(y_test, y_pred, alpha=0.5, label="Linear Regression")
+plt.scatter(y_test, lasso_pred, alpha=0.5, label="Lasso Regression")
+
+minimum = min(y_test.min(), y_pred.min(), lasso_pred.min())
+maximum = max(y_test.max(), y_pred.max(), lasso_pred.max())
+
+plt.plot([minimum, maximum], [minimum, maximum],
+         "r--", label="Perfect Prediction")
+
+plt.xlabel("Actual House Price")
+plt.ylabel("Predicted House Price")
+plt.title("Linear vs Lasso Regression")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+
+
+
+
+
+
+
+\\\\\\\
+Practical 5(b): Lasso Regression
+1. Aim
+To implement Lasso Regression on a suitable multivariate dataset and analyze its effect on model overfitting and feature selection.
+2. What is Lasso Regression?
+Lasso Regression is a regularization technique used to reduce overfitting and perform automatic feature selection.
+
+It reduces the values of less important coefficients and can make some coefficients exactly zero.
+3. Lasso Regression Formula
+\[
+\text{Cost Function} = MSE + \lambda \sum_{j=1}^{n}|w_j|
+\]
+Where:
+- MSE: Mean Squared Error.
+- λ (Lambda): Regularization parameter.
+- w: Model coefficients.
+- n: Number of features.
+Lasso Regression uses the L1 penalty, which is the sum of the absolute values of coefficients.
+4. What is Feature Selection?
+Feature selection is the process of selecting important input variables and removing unnecessary or less useful variables.
+
+Example: In house price prediction, location and area may be important features, while an irrelevant column may not contribute useful information.
+
+Lasso Regression performs automatic feature selection by making some coefficients exactly zero.
+5. How Lasso Regression Works
+1. Load a suitable multivariate dataset.
+2. Separate input features and target variable.
+3. Split the dataset into training and testing sets.
+4. Standardize the features.
+5. Train a Linear Regression model.
+6. Train a Lasso Regression model.
+7. Compare their performance.
+8. Observe which coefficients become zero.
+6. Important Libraries and Functions
+Library / Function	Purpose
+pandas	Data handling
+numpy	Numerical calculations
+train_test_split()	Splits dataset
+StandardScaler()	Scales features
+Lasso()	Creates Lasso Regression model
+fit()	Trains the model
+predict()	Predicts output
+mean_squared_error()	Calculates MSE
+r2_score()	Calculates R² score
+
+
+7. Advantages
+- Reduces overfitting.
+- Performs automatic feature selection.
+- Removes unnecessary features.
+- Produces simpler models.
+- Useful when a dataset contains many features.
+8. Limitations
+- May remove useful features if regularization is too strong.
+- Can be unstable when features are highly correlated.
+- Requires selection of the regularization parameter.
+- Feature scaling is generally recommended.
+9. Important Viva Questions and Answers
+Q1. What is Lasso Regression?
+Lasso Regression is a regularization technique that reduces overfitting and performs automatic feature selection.
+
+Q2. What is the full form of LASSO?
+Least Absolute Shrinkage and Selection Operator.
+
+Q3. Which penalty does Lasso Regression use?
+It uses the L1 penalty.
+
+Q4. What is L1 regularization?
+It is a penalty based on the sum of the absolute values of model coefficients.
+
+Q5. What happens when Lambda increases?
+More coefficients may become zero, reducing the number of selected features.
+
+Q6. Can Lasso Regression make coefficients zero?
+Yes. It can make some coefficients exactly zero.
+
+Q7. What is the main purpose of Lasso Regression?
+To reduce overfitting and perform feature selection.
+
+Q8. What is automatic feature selection?
+It means selecting important features and eliminating unnecessary ones automatically.
+
+Q9. How does Lasso Regression reduce overfitting?
+It penalizes large coefficients and simplifies the model by removing less important features.
+
+Q10. What happens when Lambda is zero?
+Lasso Regression behaves like ordinary Linear Regression.
+
+Q11. What happens if Lambda is too high?
+The model may remove too many features and become underfitted.
+
+Q12. Is Lasso Regression supervised or unsupervised?
+Supervised learning.
+
+Q13. Is Lasso used for classification or regression?
+It is used for regression.
+
+Q14. Why is feature scaling important in Lasso?
+It ensures that features with different scales are treated fairly by the regularization penalty.
+
+Q15. Which evaluation metrics are used?
+MSE, RMSE and R² score.
+Important Comparison: Ridge vs Lasso Regression
+Basis	Ridge Regression	Lasso Regression
+Penalty	L2	L1
+Formula	Sum of squared coefficients	Sum of absolute coefficients
+Coefficients	Shrinks coefficients	Can make coefficients zero
+Feature Selection	No automatic feature selection	Performs automatic feature selection
+Overfitting	Reduces overfitting	Reduces overfitting
+Multicollinearity	Handles it effectively	Can be unstable with highly correlated features
+Best Use	When most features are useful	When only some features are important
+
+
+Other Important Viva Questions
+Q1. What is the difference between Linear Regression and Regularized Regression?
+Linear Regression minimizes prediction error, while regularized regression also adds a penalty to control model complexity.
+
+Q2. What is overfitting?
+Overfitting occurs when a model performs very well on training data but poorly on unseen data.
+
+Q3. What is underfitting?
+Underfitting occurs when a model is too simple to learn the patterns in the data.
+
+Q4. What is the difference between L1 and L2 regularization?
+L1 can make coefficients exactly zero, while L2 generally only reduces their values.
+
+Q5. Which is better, Ridge or Lasso?
+Neither is always better. Ridge is useful when most features are important, while Lasso is useful when feature selection is required.
+
+Q6. What is the role of train-test split?
+It divides data into training and testing sets to evaluate performance on unseen data.
+
+Q7. What is the role of StandardScaler?
+It transforms features to have approximately zero mean and unit variance.
+
+Q8. What is the difference between MSE and RMSE?
+MSE is the average squared prediction error, while RMSE is the square root of MSE.
+
+Q9. What is R² score?
+R² measures how much variation in the target variable is explained by the model.
+
+Q10. Can Ridge and Lasso both reduce overfitting?
+Yes. Both add penalties to control large coefficients and improve generalization.
+Most Important Points to Remember Before Viva
+Question	Answer
+Ridge penalty	L2
+Lasso penalty	L1
+Ridge feature selection	No
+Lasso feature selection	Yes
+Ridge coefficients	Usually small, non-zero
+Lasso coefficients	Some can become zero
+Lambda	Controls regularization strength
+Regularization	Helps prevent overfitting
+Multicollinearity	High correlation between independent variables
+Feature selection	Selecting important input features
+StandardScaler	Feature scaling
+Evaluation metrics	MSE, RMSE, R²
+
+
+One important point: Both Ridge and Lasso are regularized Linear Regression techniques. They do not guarantee better test performance in every situation. Their effectiveness depends on the dataset and the chosen value of Lambda.

@@ -1,4 +1,4 @@
-Practical 5(b): Lasso Regression
+# Practical 5(b): Lasso Regression
 
 import pandas as pd
 import numpy as np
@@ -66,7 +66,7 @@ plt.show()
 
 
 
-\\\\\\\
+"""
 Practical 5(b): Lasso Regression
 1. Aim
 To implement Lasso Regression on a suitable multivariate dataset and analyze its effect on model overfitting and feature selection.
@@ -226,3 +226,49 @@ Evaluation metrics	MSE, RMSE, R²
 
 
 One important point: Both Ridge and Lasso are regularized Linear Regression techniques. They do not guarantee better test performance in every situation. Their effectiveness depends on the dataset and the chosen value of Lambda.
+
+Important Formulas
+1. Linear Regression Equation
+
+Y = b0 + b1X1 + b2X2 + ... + bnXn
+
+Where:
+- Y = Predicted value
+- b0 = Intercept
+- b1, b2 = Coefficients
+- X1, X2 = Input features
+2. Lasso Regression Cost Function
+
+Cost = MSE + alpha × Sum of Absolute Values of Coefficients
+
+3. Mean Squared Error (MSE)
+
+MSE = Sum of (Actual Value - Predicted Value)² / Number of Samples
+
+4. Root Mean Squared Error (RMSE)
+
+RMSE = √MSE
+
+5. R² Score
+
+R² = 1 - (Sum of Squared Errors / Total Sum of Squares)
+
+6. Feature Selection
+
+Selected Features = Features whose Lasso coefficients are not equal to zero
+
+Workflow
+1. Import required libraries such as Pandas, NumPy, Matplotlib and Scikit-learn.
+2. Load the California Housing dataset using pd.read_csv().
+3. Separate the independent features (X) and target variable (y).
+4. Split the dataset into training and testing sets using an 80:20 ratio.
+5. Apply StandardScaler to standardize the input features.
+6. Create and train the Linear Regression model.
+7. Predict house prices using the Linear Regression model.
+8. Create and train the Lasso Regression model with alpha = 0.1.
+9. Predict house prices using the Lasso model.
+10. Calculate MSE, RMSE and R² score for both models.
+11. Display the features selected by Lasso Regression.
+12. Plot actual values against predicted values for both models.
+
+"""

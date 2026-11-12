@@ -1,4 +1,4 @@
-Practical 7(a): Support Vector Machine (SVM) – Linear Kernel
+# Practical 7(a): Support Vector Machine (SVM) – Linear Kernel
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -46,7 +46,7 @@ plt.show()
 
 
 
-\\\\\\\\
+"""
 Practical 7(a): Support Vector Machine (SVM) – Linear Kernel
 1. Aim
 To implement a Support Vector Machine classifier using a Linear Kernel on a suitable open-access dataset and evaluate its classification performance using appropriate evaluation metrics.
@@ -161,3 +161,54 @@ RBF.
 
 Q15. Which metrics are used to evaluate SVM?
 Accuracy, precision, recall, F1-score and confusion matrix.
+
+
+Important Formulas
+1. Linear Hyperplane
+
+w1X1 + w2X2 + ... + wnXn + b = 0
+
+Where:
+- w = Weight or coefficient
+- X = Input features
+- b = Bias
+2. House Category
+
+HouseCategory = 1, if MedHouseVal > Median
+
+HouseCategory = 0, otherwise
+
+3. Accuracy
+
+Accuracy = (TP + TN) / (TP + TN + FP + FN)
+
+4. Precision
+
+Precision = TP / (TP + FP)
+
+5. Recall
+
+Recall = TP / (TP + FN)
+
+6. F1 Score
+
+F1 Score = 2 × (Precision × Recall) / (Precision + Recall)
+
+
+4. Workflow
+1. Import required libraries such as Pandas, Matplotlib, Seaborn and Scikit-learn.
+2. Load the California Housing dataset.
+3. Calculate the median of the MedHouseVal column.
+4. Create a new column called HouseCategory.
+5. Assign 1 to houses above the median and 0 to the remaining houses.
+6. Separate input features (X) and target variable (y).
+7. Split the dataset into 80% training and 20% testing sets using stratification.
+8. Apply StandardScaler to standardize the input features.
+9. Create an SVM model using SVC(kernel="linear").
+10. Train the model using training data.
+11. Predict house categories using testing data.
+12. Calculate Accuracy, Precision, Recall and F1-score.
+13. Generate the confusion matrix.
+14. Display the confusion matrix using a heatmap.
+
+"""

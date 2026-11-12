@@ -1,47 +1,37 @@
-Practical 11: Reinforcement Learning Using Q-Learning
+#Practical 11: Reinforcement Learning Using Q-Learning
+
 import numpy as np
 import random
 import matplotlib.pyplot as plt
 
-size = 4
-states = size * size
-actions = 4
-goal = 15
-
-Q = np.zeros((states, actions))
+Q = np.zeros((16, 4))
 
 alpha = 0.1
 gamma = 0.9
 epsilon = 1.0
 rewards = []
 
-def next_state(state, action):
-    row, col = divmod(state, size)
-
-    if action == 0:
-        row = max(0, row - 1)
-    elif action == 1:
-        row = min(size - 1, row + 1)
-    elif action == 2:
-        col = max(0, col - 1)
-    else:
-        col = min(size - 1, col + 1)
-
-    return row * size + col
-
-# Training
-for episode in range(2000):
+for episode in range(1000):
     state = 0
     total_reward = 0
 
     for step in range(50):
+
         if random.random() < epsilon:
             action = random.randint(0, 3)
         else:
             action = np.argmax(Q[state])
 
-        new_state = next_state(state, action)
-        reward = 10 if new_state == goal else -1
+        if action == 0:
+            new_state = max(0, state - 4)
+        elif action == 1:
+            new_state = min(15, state + 4)
+        elif action == 2:
+            new_state = state if state % 4 == 0 else state - 1
+        else:
+            new_state = state if state % 4 == 3 else state + 1
+
+        reward = 10 if new_state == 15 else -1
 
         Q[state, action] += alpha * (
             reward + gamma * np.max(Q[new_state]) - Q[state, action]
@@ -50,397 +40,547 @@ for episode in range(2000):
         state = new_state
         total_reward += reward
 
-        if state == goal:
+        if state == 15:
             break
 
     rewards.append(total_reward)
     epsilon = max(0.01, epsilon * 0.995)
 
-print("Training Completed!")
-print("Final Epsilon:", epsilon)
+print("Training Completed")
 print("Average Reward:", np.mean(rewards[-100:]))
 
-print("\nQ-Table:")
-print("       Up      Down    Left    Right")
-
-for i in range(states):
-    print(f"State {i:2d}:", np.round(Q[i], 2))
-
+# Optimal Policy
 arrows = ["↑", "↓", "←", "→"]
 
 print("\nOptimal Policy:")
-print("S = Start, G = Goal")
 
-for i in range(states):
+for i in range(16):
     if i == 0:
-        print(" S ", end=" ")
-    elif i == goal:
-        print(" G ", end=" ")
+        print("S", end="  ")
+    elif i == 15:
+        print("G", end="  ")
     else:
-        print(f" {arrows[np.argmax(Q[i])]} ", end=" ")
+        print(arrows[np.argmax(Q[i])], end="  ")
 
-    if (i + 1) % size == 0:
+    if (i + 1) % 4 == 0:
         print()
 
-state = 0
-path = [state]
-
-for step in range(50):
-    if state == goal:
-        break
-
-    action = np.argmax(Q[state])
-    state = next_state(state, action)
-    path.append(state)
-
-print("\nPath followed:")
-
-for i, state in enumerate(path):
-    row, col = divmod(state, size)
-    print(f"Step {i}: ({row}, {col})")
-
-if state == goal:
-    print("Goal Reached Successfully!")
-else:
-    print("Goal Not Reached!")
-
-plt.plot(np.convolve(rewards, np.ones(100)/100, mode="valid"))
+# Performance Graph
+plt.plot(rewards)
 plt.xlabel("Episodes")
-plt.ylabel("Average Reward")
-plt.title("Q-Learning Training Performance")
-plt.grid()
+plt.ylabel("Reward")
+plt.title("Q-Learning Performance")
 plt.show()
 
 
 
 
 
-///////
-Practical 11: Reinforcement Learning Using Q-Learning
-1. Aim
-To evaluate the performance of Reinforcement Learning using the Q-Learning algorithm for a simple game or decision-making problem, focusing on exploration–exploitation strategies and the optimal policy.
-2. What is Reinforcement Learning?
-Reinforcement Learning (RL) is a type of machine learning in which an agent learns to make decisions by interacting with an environment and receiving rewards or penalties.
-
-The agent learns through trial and error to achieve the maximum possible reward.
-
-Example: In a game, a player learns which moves are good by receiving rewards for winning and penalties for losing.
-3. Components of Reinforcement Learning
-Component	Meaning
-Agent	The learner or decision-maker.
-Environment	The place where the agent operates.
-State	Current situation of the agent.
-Action	A decision taken by the agent.
-Reward	Feedback received after an action.
-Policy	Strategy used by the agent to select actions.
-Value Function	Estimates the expected future rewards from a state.
 
 
-Simple Diagram
-          Action
-     ┌──────────────┐
-     │              ▼
-  ┌───────┐    ┌─────────────┐
-  │ Agent │    │ Environment │
-  └───────┘    └─────────────┘
-     ▲              │
-     │              │
-     └──────────────┘
-       State + Reward
 
-4. What is Q-Learning?
-Q-Learning is a model-free, off-policy Reinforcement Learning algorithm that helps an agent learn the best action to take in a particular state.
+"""
+Code explanation (line by line)
+Step 1: Import libraries
+import numpy as npimport randomimport matplotlib.pyplot as plt
 
-It learns by updating Q-values based on the rewards received and the estimated future rewards.
 
-A Q-value represents the expected total future reward for taking a particular action in a particular state and then following the learned policy.
-5. Q-Learning Update Formula
-The Q-Learning update rule is:
+
+- numpy: Used for numerical operations and creating the Q-table.
+- random: Used to select random actions during exploration.
+- matplotlib.pyplot: Used to plot the learning performance graph.
+Step 2: Initialize Q-table
+Q = np.zeros((16, 4))
+
+
+
+- Creates a Q-table with 16 rows and 4 columns.
+- 16 represents the 16 states in the 4×4 grid.
+- 4 represents the four possible actions.
+Initially, all Q-values are zero because the agent has not learned anything.
+
+Actions:
+Number	Action
+0	Up
+1	Down
+2	Left
+3	Right
+
+Step 3: Set parameters
+alpha = 0.1gamma = 0.9epsilon = 1.0rewards = []
+
+
+
+- alpha = 0.1: Learning rate. Controls how much new information is used.
+- gamma = 0.9: Discount factor. Gives importance to future rewards.
+- epsilon = 1.0: Initially, the agent performs 100% exploration.
+- rewards = []: Stores the total reward obtained in each episode.
+Step 4: Training episodes
+for episode in range(1000):    state = 0    total_reward = 0
+
+
+
+- The agent is trained for 1000 episodes.
+- Each episode starts from state 0.
+- total_reward stores the reward collected during that episode.
+What is an episode?
+
+One complete attempt by the agent to reach the goal.
+Step 5: Maximum steps
+for step in range(50):
+
+
+
+The agent can take a maximum of 50 steps in each episode.
+
+This prevents the agent from moving endlessly without reaching the goal.
+Step 6: Exploration and exploitation
+if random.random() < epsilon:    action = random.randint(0, 3)else:    action = np.argmax(Q[state])
+
+
+
+This is the most important part of your code.
+
+It uses the Epsilon-Greedy Strategy.
+- If the random number is less than epsilon, the agent selects a random action (exploration).
+- Otherwise, it selects the action with the highest Q-value (exploitation).
+np.argmax(Q[state]) returns the action with the highest Q-value for the current state.
+Step 7: Perform actions
+if action == 0:    new_state = max(0, state - 4)elif action == 1:    new_state = min(15, state + 4)elif action == 2:    new_state = state if state % 4 == 0 else state - 1else:    new_state = state if state % 4 == 3 else state + 1
+
+
+
+This section controls the agent's movement in the grid.
+4×4 Grid World
+S
+
+
+1
+
+
+2
+
+
+3
+
+
+4
+
+
+5
+
+
+6
+
+
+7
+
+
+8
+
+
+9
+
+
+10
+
+
+11
+
+
+12
+
+
+13
+
+
+14
+
+
+G
+
+
+
+S = Starting position (0)G = Goal (15)
+
+Action	Movement	Explanation
+0	Up	Moves 4 positions backward
+1	Down	Moves 4 positions forward
+2	Left	Moves 1 position backward
+3	Right	Moves 1 position forward
+
+Why use max() and min()?
+
+They prevent the agent from moving outside the grid boundaries.
+
+For example:
+- max(0, state - 4) prevents moving above the first row.
+- min(15, state + 4) prevents moving below the last row.
+The % 4 conditions prevent horizontal movement from wrapping around to another row.
+Step 8: Assign rewards
+reward = 10 if new_state == 15 else -1
+
+
+
+This is the reward system.
+- If the agent reaches state 15 (goal), it receives +10.
+- Otherwise, it receives -1 for every movement.
+Why give -1 for every step?
+
+To encourage the agent to reach the goal using fewer steps.
+Step 9: Update Q-values
+Q[state, action] += alpha * (    reward + gamma * np.max(Q[new_state]) - Q[state, action])
+
+
+
+This is the most important mathematical operation in Q-Learning.
+
+It updates the Q-value using the Q-Learning formula:
 \[
-Q(s,a) \leftarrow Q(s,a)+\alpha[r+\gamma\max Q(s',a')-Q(s,a)]
+Q(s,a)\leftarrow Q(s,a)+\alpha[r+\gamma\max Q(s',a')-Q(s,a)]
 \]
+
+In your code:
+Code	Meaning
+Q[state, action]	Current Q-value
+alpha	Learning rate
+reward	Immediate reward
+gamma	Discount factor
+np.max(Q[new_state])	Maximum future Q-value
+
+The agent learns which actions give better future rewards.
+Step 10: Update state and reward
+state = new_statetotal_reward += rewardif state == 15:    break
+
+
+
+- Updates the current state.
+- Adds the reward to the total reward.
+- Stops the episode if the agent reaches the goal.
+Step 11: Store rewards and decrease epsilon
+rewards.append(total_reward)epsilon = max(0.01, epsilon * 0.995)
+
+
+
+- Stores the total reward of each episode.
+- Reduces epsilon gradually.
+- This means the agent explores less and exploits more as training progresses.
+- Epsilon never goes below 0.01.
+Step 12: Display results
+print("Training Completed")print("Average Reward:", np.mean(rewards[-100:]))
+
+
+
+- Displays the training completion message.
+- Calculates the average reward of the last 100 episodes.
+This helps us understand the agent's recent learning performance.
+Step 13: Display optimal policy
+arrows = ["↑", "↓", "←", "→"]print("\nOptimal Policy:")for i in range(16):    if i == 0:        print("S", end="  ")    elif i == 15:        print("G", end="  ")    else:        print(arrows[np.argmax(Q[i])], end="  ")    if (i + 1) % 4 == 0:        print()
+
+
+
+This section displays the learned policy.
+- arrows represents the four possible actions.
+- np.argmax(Q[i]) selects the action with the highest Q-value for each state.
+- S represents the starting position.
+- G represents the goal.
+The arrows show the agent's preferred direction in each state.
+Step 14: Plot performance graph
+plt.plot(rewards)plt.xlabel("Episodes")plt.ylabel("Reward")plt.title("Q-Learning Performance")plt.show()
+
+
+
+This plots the learning performance.
+- X-axis: Number of episodes.
+- Y-axis: Total reward obtained.
+As the agent learns, rewards should generally improve.
+
+2. Expected output
+Your output will contain:
+Training Completed
+Average Reward: [calculated value]
+
+Optimal Policy:
+S  →  →  ↓
+↓  ↓  →  ↓
+↓  →  →  ↓
+→  →  →  G
+
+
+Illustrative policy only. The actual arrows depend on the learned Q-table and random training.
+
+The performance graph will show rewards across 1000 episodes.
+
+
+
+
+
+
+
+
+medium.com
+
+
+3. Important Viva Questions Based on YOUR Code
+These are especially important because your examiner can ask questions directly from your program.
+
+Q1. Which algorithm is implemented in this program?
+
+Q-Learning, a model-free, off-policy Reinforcement Learning algorithm.
+
+Q2. What environment is used?
+
+A 4×4 Grid World environment.
+
+Q3. How many states are present?
+
+16 states.
+
+Q4. How many actions are available?
+
+4 actions: Up, Down, Left and Right.
+
+Q5. Where does the agent start?
+
+At state 0.
+
+Q6. What is the goal state?
+
+State 15.
+
+Q7. Why is the Q-table initialized with zeros?
+
+Because initially the agent has no knowledge about the rewards of different actions.
+
+Q8. Why is the Q-table size (16, 4)?
+
+Because there are 16 states and 4 possible actions per state.
+
+Q9. Why are there 1000 episodes?
+
+To give the agent enough training opportunities to learn a good policy.
+
+Q10. What is the maximum number of steps per episode?
+
+50 steps.
+
+Q11. What is the learning rate in your code?
+
+0.1.
+
+Q12. What is the discount factor?
+
+0.9.
+
+Q13. What is the initial epsilon value?
+
+1.0, meaning the agent initially explores completely.
+
+Q14. What is the final minimum epsilon?
+
+0.01.
+
+Q15. Why is epsilon reduced?
+
+To gradually reduce exploration and increase exploitation.
+
+Q16. What reward is given for reaching the goal?
+
++10.
+
+Q17. What reward is given for other movements?
+
+-1.
+
+Q18. Why do we give a negative reward for each movement?
+
+To encourage the agent to reach the goal using fewer steps.
+
+Q19. What does np.argmax() do?
+
+It returns the index of the maximum value in an array.
+
+Q20. What does np.max(Q[new_state]) do?
+
+It finds the highest Q-value among all possible actions in the next state.
+
+Q21. What is the purpose of random.random()?
+
+It generates a random floating-point number between 0 and 1.
+
+Q22. What does random.randint(0,3) do?
+
+It randomly selects an action from 0 to 3.
+
+Q23. What does rewards[-100:] mean?
+
+It selects the last 100 reward values.
+
+Q24. Why do we use np.mean()?
+
+To calculate the average reward.
+
+Q25. What does the graph represent?
+
+It represents the agent's reward over different training episodes.
+
+Q26. What is an optimal policy in your program?
+
+It is the strategy that selects the action with the highest Q-value in each state.
+
+Q27. What is the difference between exploration and exploitation in your code?
+
+Exploration selects random actions, while exploitation selects the action with the highest Q-value.
+
+Q28. Why is break used?
+
+To stop the current episode when the agent reaches the goal.
+
+Q29. What is the purpose of random_state in this program?
+
+There is no random_state parameter in this code. Randomness is controlled by Python's random module and NumPy's random operations, if used.
+
+Q30. Is this program using Deep Q-Learning?
+
+No. It uses a simple Q-table, not a neural network.
+
+
+
+1. Important definitions
+1. Reinforcement Learning (RL): A type of machine learning in which an agent learns by interacting with an environment and receiving rewards or penalties for its actions.
+
+2. Agent: The learner or decision-maker that performs actions. In your practical, the agent is the player moving through the grid.
+
+3. Environment: The world in which the agent operates. In your practical, it is the 4×4 grid.
+
+4. State: The current position or situation of the agent. Your grid has 16 states, numbered 0 to 15.
+
+5. Action: A move performed by the agent. Your practical has four actions: Up, Down, Left and Right.
+
+6. Reward: Feedback received after performing an action. In your code, reaching the goal gives +10, while every other move gives -1.
+
+7. Q-Value: A numerical value that represents how good a particular action is in a particular state.
+
+8. Q-Table: A table that stores Q-values for every state-action pair. Your code uses a 16×4 Q-table.
+
+9. Q-Learning: A model-free, off-policy reinforcement learning algorithm that learns the best action to take in each state by updating Q-values.
+
+10. Learning Rate (α): Determines how much new information is used to update the Q-value. Your value is 0.1.
+
+11. Discount Factor (γ): Determines the importance of future rewards compared to immediate rewards. Your value is 0.9.
+
+12. Exploration: Trying random actions to discover better paths or rewards.
+
+13. Exploitation: Choosing the action with the highest known Q-value.
+
+14. Epsilon (ε): Controls the probability of exploration. Your code starts with ε = 1.0 and gradually decreases it.
+
+15. Optimal Policy: The best strategy that tells the agent which action to take in each state to maximize its total expected reward.
+
+16. Episode: One complete training attempt, starting from the initial state and ending when the goal is reached or the step limit is reached.
+
+17. Terminal State: The final state where the episode ends. In your practical, state 15 is the goal.
+2. Important formulas
+1. Q-Learning Update Formula
+Most important formula
+\[
+Q(s,a) \leftarrow Q(s,a)+\alpha
+\left[r+\gamma\max_{a'}Q(s',a')-Q(s,a)\right]
+\]
+
 Where:
-Symbol	Meaning
-Q(s,a)	Current Q-value
-α (Alpha)	Learning rate
-r	Immediate reward
-γ (Gamma)	Discount factor
-s	Current state
-a	Current action
-s'	Next state
-max Q(s',a')	Maximum estimated future Q-value from the next state
+- \(Q(s,a)\) = Current Q-value
+- \(\alpha\) = Learning rate (0.1)
+- \(r\) = Immediate reward
+- \(\gamma\) = Discount factor (0.9)
+- \(s'\) = Next state
+- \(\max Q(s',a')\) = Maximum future Q-value
+Meaning: It updates the current Q-value using the reward received and the best possible future reward.
+2. Epsilon-Greedy Action Selection
+\[
+a =
+\begin{cases}
+\text{Random action}, & \text{if } random < \epsilon\\
+\arg\max_a Q(s,a), & \text{otherwise}
+\end{cases}
+\]
 
+Meaning: The agent sometimes explores by choosing a random action and otherwise exploits its learned knowledge.
+3. Epsilon Decay Formula
+\[
+\epsilon_{\text{new}}=\max(0.01,\epsilon_{\text{old}}\times0.995)
+\]
 
-Simple explanation: The agent updates its knowledge using the current reward and the best estimated future reward.
-6. Important Parameters in Q-Learning
-A. Learning Rate (Alpha)
-- Controls how much new information is used to update Q-values.
-- Range: 0 to 1.
-- Higher alpha means faster learning from new information.
-B. Discount Factor (Gamma)
-- Determines the importance of future rewards.
-- Range: 0 to 1.
-- Higher gamma gives more importance to future rewards.
-C. Exploration Rate (Epsilon)
-- Controls how often the agent tries random actions.
-- Higher epsilon means more exploration.
-- Lower epsilon means more exploitation.
-7. Exploration vs Exploitation
-This is an important problem in Reinforcement Learning.
-Exploration
-Exploration means trying new actions to discover better rewards.
+Meaning: Epsilon decreases gradually, reducing random actions as training progresses. It never goes below 0.01.
+4. Total Episode Reward
+\[
+R_{\text{total}}=\sum_{t=1}^{T}r_t
+\]
 
-Example: A player tries a new move in a game to discover whether it is useful.
-Exploitation
-Exploitation means selecting the best-known action based on previous learning.
+Meaning: It is the sum of all rewards received during one episode.
+5. Average Reward
+\[
+\text{Average Reward}=
+\frac{\text{Sum of rewards}}{\text{Number of episodes}}
+\]
 
-Example: A player repeatedly uses a move that has previously helped them win.
-Difference Between Exploration and Exploitation
-Exploration	Exploitation
-Tries new actions.	Uses the best-known action.
-Helps discover better strategies.	Uses existing knowledge.
-May give uncertain rewards.	Uses learned Q-values.
-Important during learning.	Important when applying the learned policy.
+In your code, the average is calculated for the last 100 episodes:
+\[
+\text{Average Reward}=
+\frac{\sum_{i=901}^{1000}R_i}{100}
+\]
 
-
-8. Epsilon-Greedy Strategy
-The Epsilon-Greedy Strategy is a method used to balance exploration and exploitation.
-
-It works as follows:
-- With probability ε (epsilon), the agent selects a random action (exploration).
-- With probability 1 − ε, the agent selects the action with the highest Q-value (exploitation).
-Example:
-
-If epsilon = 0.2:
-- 20% chance of choosing a random action.
-- 80% chance of choosing the best-known action.
-Usually, epsilon is gradually decreased during training so the agent explores more initially and exploits more as it learns.
-9. Example: Q-Learning in Grid World
-Grid World is a simple environment in which an agent moves through a grid to reach a goal.
-
-Example:
- ┌─────┬─────┬─────┐
- │  S  │     │     │
- ├─────┼─────┼─────┤
- │     │  X  │     │
- ├─────┼─────┼─────┤
- │     │     │  G  │
- └─────┴─────┴─────┘
-
-- S: Starting position.
-- G: Goal position.
-- X: Obstacle.
-Working:
-1. The agent starts from the initial position.
-2. It selects an action such as Up, Down, Left, or Right.
-3. The environment provides a reward or penalty.
-4. The agent updates its Q-table.
-5. It repeats this process over multiple episodes.
-6. Eventually, it learns a good path to reach the goal.
-The rewards can be designed as:
-- Reaching the goal: +10
-- Hitting an obstacle: −10
-- Each movement: −1
-These are example reward values; they can be changed depending on the problem.
-10. What is a Q-Table?
-A Q-Table is a table that stores Q-values for different state-action pairs.
-
-It helps the agent decide which action is best in a particular state.
-
-Example:
-State	Up	Down	Left	Right
-S1	2	5	1	8
-S2	4	7	3	2
-S3	6	2	5	9
-
-
-For state S1, the agent selects Right because it has the highest Q-value (8), assuming exploitation.
-11. What is an Optimal Policy?
-An Optimal Policy is a strategy that tells the agent which action to take in each state to maximize the expected total future reward.
-
-In simple words, it is the best strategy learned by the agent to achieve its goal.
-
-In Q-Learning, the learned greedy policy selects the action with the highest Q-value in each state.
+6. Optimal Action Selection
 \[
 \pi(s)=\arg\max_a Q(s,a)
 \]
-12. Workflow of Q-Learning
-1. Import the required Python libraries.
-2. Create or load the environment.
-3. Initialize the Q-table with zeros.
-4. Set learning rate, discount factor, and exploration rate.
-5. Select actions using the epsilon-greedy strategy.
-6. Perform actions and receive rewards.
-7. Update Q-values using the Q-Learning formula.
-8. Repeat training for multiple episodes.
-9. Reduce exploration gradually if required.
-10. Evaluate the learned policy and performance.
-13. How to Evaluate Q-Learning Performance?
-The performance of Q-Learning can be evaluated using:
-Metric	Meaning
-Total Reward	Total reward collected during an episode.
-Success Rate	Percentage of episodes in which the agent reaches the goal.
-Number of Steps	Number of actions needed to reach the goal.
-Convergence	Whether Q-values become relatively stable during learning.
-Learning Curve	Graph showing how rewards change over training episodes.
 
+Meaning: The agent selects the action having the highest Q-value in the current state. This gives the learned policy.
+3. Values used in your practical
+Parameter	Value	Purpose
+Number of states	16	4×4 grid
+Number of actions	4	Up, Down, Left, Right
+Learning rate (α)	0.1	Learning speed
+Discount factor (γ)	0.9	Future reward importance
+Initial epsilon (ε)	1.0	Initial exploration
+Minimum epsilon	0.01	Minimum exploration
+Epsilon decay	0.995	Reduces exploration
+Episodes	1000	Training attempts
+Maximum steps	50	Steps per episode
+Goal reward	+10	Reaching state 15
+Other reward	-1	Every non-goal move
 
-Expected observation: As training progresses, the agent should generally learn better actions, achieve higher rewards, and reach the goal more consistently.
+4. Important viva questions
+Q1. Which algorithm is used in this practical?
 
-However, actual performance depends on the environment, reward design, and parameter values.
-14. Advantages of Q-Learning
-1. Simple and easy to implement.
-2. Does not require a model of the environment.
-3. Learns through trial and error.
-4. Balances exploration and exploitation.
-5. Can learn an optimal policy in suitable environments.
-15. Limitations of Q-Learning
-1. Requires many training episodes in complex environments.
-2. Q-tables become very large for large state spaces.
-3. Performance depends on parameter selection.
-4. Learning may be slow.
-5. Continuous state spaces require additional techniques.
-16. Important Viva Questions and Answers
-Basic Concepts
-Q1. What is Reinforcement Learning?
-It is a type of machine learning where an agent learns by interacting with an environment and receiving rewards or penalties.
+Q-Learning, a model-free reinforcement learning algorithm.
 
-Q2. What is an agent?
-An agent is the learner or decision-maker in Reinforcement Learning.
+Q2. What is the main formula of Q-Learning?
+\[
+Q(s,a)\leftarrow Q(s,a)+\alpha
+[r+\gamma\max Q(s',a')-Q(s,a)]
+\]
 
-Q3. What is an environment?
-It is the world in which the agent performs actions.
+Q3. What is the purpose of the Q-table?
 
-Q4. What is a state?
-A state represents the current situation of the agent.
+It stores the value of each action in every state.
 
-Q5. What is an action?
-An action is a decision taken by the agent.
+Q4. What is the difference between exploration and exploitation?
+- Exploration: Trying new actions.
+- Exploitation: Choosing the best-known action.
+Q5. What happens when epsilon decreases?
 
-Q6. What is a reward?
-A reward is feedback received by the agent after performing an action.
+The agent performs fewer random actions and uses its learned knowledge more often.
 
-Q7. What is a policy?
-A policy is a strategy that tells the agent which action to take in a given state.
-Q-Learning
-Q8. What is Q-Learning?
-Q-Learning is a model-free Reinforcement Learning algorithm that learns the best action for each state.
+Q6. What is the goal state in your practical?
 
-Q9. What is a Q-value?
-It represents the expected future reward for taking a particular action in a particular state.
+State 15, which gives a reward of +10.
 
-Q10. What is a Q-table?
-A table that stores Q-values for different state-action pairs.
+Q7. Is Q-Learning supervised or unsupervised learning?
 
-Q11. Is Q-Learning supervised or unsupervised learning?
-Neither. It is a Reinforcement Learning algorithm.
+Neither. It is reinforcement learning.
 
-Q12. What does model-free mean?
-It means the algorithm does not need a predefined model of the environment's transitions and rewards.
+Q8. What is the difference between Q-Learning and Deep Q-Learning?
 
-Q13. What is the learning rate?
-It controls how much new information affects the Q-value update.
-
-Q14. What is the discount factor?
-It controls how much importance is given to future rewards.
-
-Q15. What is the role of alpha?
-Alpha controls the learning rate.
-
-Q16. What is the role of gamma?
-Gamma controls the importance of future rewards.
-Exploration and Exploitation
-Q17. What is exploration?
-Trying new actions to discover better rewards.
-
-Q18. What is exploitation?
-Choosing the best-known action based on previous learning.
-
-Q19. What is the exploration–exploitation dilemma?
-It is the challenge of deciding whether to try new actions or use already learned actions.
-
-Q20. What is the epsilon-greedy strategy?
-It selects a random action with probability epsilon and the best-known action with probability 1 − epsilon.
-
-Q21. What happens when epsilon is high?
-The agent performs more exploration.
-
-Q22. What happens when epsilon is low?
-The agent performs more exploitation.
-
-Q23. Why do we decrease epsilon during training?
-To encourage exploration initially and gradually focus more on learned actions.
-Optimal Policy and Evaluation
-Q24. What is an optimal policy?
-A strategy that maximizes the expected total future reward.
-
-Q25. What is an episode?
-One complete interaction sequence from the starting state until a terminal condition is reached.
-
-Q26. What is convergence?
-When the Q-values become relatively stable through learning.
-
-Q27. How do we evaluate Q-Learning performance?
-Using total reward, success rate, number of steps, and learning curves.
-
-Q28. What is the Bellman equation?
-It is an equation that expresses the value of a state or state-action pair using immediate rewards and future values.
-
-Q29. What is the difference between Q-Learning and Supervised Learning?
-Supervised Learning uses labelled data, whereas Q-Learning learns through rewards and penalties.
-
-Q30. What is the main limitation of a Q-table?
-It requires large amounts of memory when the number of states and actions becomes very large.
-17. Important Differences for Viva
-Q-Learning vs Traditional Supervised Learning
-Q-Learning	Supervised Learning
-Learns through rewards and penalties.	Learns using labelled data.
-Uses an agent and environment.	Uses input and output examples.
-Learns a policy.	Learns a mapping from inputs to outputs.
-Example: Game-playing agent.	Example: Spam detection.
-
-
-Exploration vs Exploitation
-Exploration	Exploitation
-Tries new actions.	Selects the best-known action.
-Discovers new possibilities.	Uses existing knowledge.
-Useful during early learning.	Useful when applying the learned policy.
-
-
-Q-Learning vs SARSA
-Q-Learning	SARSA
-Off-policy algorithm.	On-policy algorithm.
-Uses the maximum next-state Q-value.	Uses the Q-value of the next action actually selected.
-Learns the greedy target policy.	Learns according to the policy being followed.
-
-
-18. Quick Revision Before Viva
-Term	Answer
-Reinforcement Learning	Learning through rewards and penalties
-Agent	Decision-maker
-Environment	World in which agent operates
-State	Current situation
-Action	Decision taken
-Reward	Feedback
-Policy	Strategy
-Q-Learning	Model-free, off-policy RL algorithm
-Q-Table	Stores Q-values
-Alpha	Learning rate
-Gamma	Discount factor
-Epsilon	Exploration rate
-Exploration	Trying new actions
-Exploitation	Using the best-known action
-Epsilon-Greedy	Balances exploration and exploitation
-Optimal Policy	Best strategy to maximize expected reward
-Episode	One complete learning trial
-
-
-Most important points to remember:
-1. Q-Learning is a model-free, off-policy Reinforcement Learning algorithm.
-2. It learns using a Q-table.
-3. Alpha is the learning rate.
-4. Gamma is the discount factor.
-5. Epsilon controls exploration.
-6. Epsilon-greedy balances exploration and exploitation.
-7. The optimal policy selects the action with the highest Q-value.
-8. Performance can be measured using total reward and success rate.
+Q-Learning uses a Q-table, whereas Deep Q-Learning uses a neural network to estimate Q-values.
+"""

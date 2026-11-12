@@ -173,3 +173,73 @@ MSE, RMSE and R² score.
 
 Q15. What is the main disadvantage of Ridge Regression?
 It cannot automatically remove unnecessary features because it generally does not make coefficients exactly zero.
+
+Important Formulas
+1. Linear Regression Equation
+
+Y = b₀ + b₁X₁ + b₂X₂ + ... + bₙXₙ
+
+2. Ridge Regression Cost Function
+
+J = Σ(yᵢ − ŷᵢ)² + αΣbⱼ²
+
+Where:
+- yᵢ = Actual value
+- ŷᵢ = Predicted value
+- bⱼ = Model coefficients
+- α = Regularization parameter
+3. Mean Squared Error (MSE)
+
+MSE = Σ(Actual Value − Predicted Value)² / N
+
+4. Root Mean Squared Error (RMSE)
+
+RMSE = √MSE
+
+5. R² Score
+
+R² = 1 − (SSres / SStot)
+
+6. Perfect Prediction
+
+Actual Value = Predicted Value
+
+In the graph, perfect predictions lie on the diagonal reference line.
+
+Practical Workflow
+1. Import Required Libraries
+   
+   Import Pandas, NumPy, Matplotlib and Scikit-learn functions.
+2. Load California Housing Dataset
+   
+   Read the CSV file using Pandas.
+3. Separate Features and Target
+   
+   X contains input features and y contains MedHouseVal.
+4. Split Dataset
+   
+   Divide the dataset into 80% training and 20% testing data.
+5. Apply Standardization
+   
+   Use StandardScaler to bring features to a common scale.
+6. Train Linear Regression Model
+   
+   Train the first model using training data.
+7. Make Linear Regression Predictions
+   
+   Predict house prices using testing data.
+8. Train Ridge Regression Model
+   
+   Create Ridge Regression with alpha = 1.0 and train it.
+9. Make Ridge Predictions
+   
+   Predict house prices using the Ridge model.
+10. Evaluate Both Models
+    
+    Calculate MSE, RMSE and R² Score for both models.
+11. Plot Actual vs Predicted Graph
+    
+    Display predictions from both models and the perfect prediction line.
+12. Compare Results
+    
+    Compare the performance of Linear Regression and Ridge Regression.

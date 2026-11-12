@@ -1,4 +1,4 @@
-Practical 2(b): Dimensionality Reduction Using LDA
+# Practical 2(b): Dimensionality Reduction Using LDA
 
 import pandas as pd
 import time
@@ -57,7 +57,7 @@ print("Execution Time:", time2)
 
 
 
-\\\\\\\\\
+"""
 Practical 2(b): Dimensionality Reduction Using LDA
 Algorithm: Linear Discriminant Analysis (LDA)
 1. Aim of the Practical
@@ -313,3 +313,40 @@ Important points to remember:
 - LDA can produce at most (number of classes − 1) components.
 - LDA does not guarantee improved accuracy.
 Exam tip: The most likely question in this practical is: "What is the difference between PCA and LDA?" Prepare that comparison thoroughly because it connects both parts of your dimensionality reduction practical.
+
+Accuracy
+Measures the percentage of correct predictions made by a model.
+Accuracy = (Number of Correct Predictions / Total Number of Predictions) × 100
+
+Practical Workflow
+1. Import Required Libraries
+   
+   Import Pandas, LDA, StandardScaler, Logistic Regression and evaluation functions.
+2. Load Iris Dataset
+   
+   Read the Iris CSV file using Pandas.
+3. Separate Features and Target
+   
+   X contains input features and y contains target labels.
+4. Split Dataset
+   
+   Divide the dataset into 80% training and 20% testing data.
+5. Apply Standardization
+   
+   Use StandardScaler to bring features to a common scale.
+6. Train Logistic Regression Before LDA
+   
+   Train the model using all original features.
+7. Calculate Accuracy and Execution Time
+   
+   Evaluate the model before applying LDA.
+8. Apply LDA
+   
+   Reduce the original four features to two components using class labels.
+9. Train Logistic Regression After LDA
+   
+   Train another model using the reduced features.
+10. Compare Results
+    
+    Compare accuracy and execution time before and after LDA
+"""

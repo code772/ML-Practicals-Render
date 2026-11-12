@@ -1,4 +1,4 @@
-Practical 2: Dimensionality Reduction Using PCA
+# Practical 2: Dimensionality Reduction Using PCA
 
 import pandas as pd
 import time
@@ -60,7 +60,7 @@ print("Execution Time:", time2)
 
 
 
-//////////
+"""
 Practical 2: Dimensionality Reduction Using PCA
 Algorithm: Principal Component Analysis (PCA)
 1. Aim of the Practical
@@ -309,28 +309,38 @@ Does not require class labels	Requires class labels
 Maximizes variance	Maximizes class separation
 Used for dimensionality reduction	Used for dimensionality reduction and classification
 
+Accuracy Formula:
+Accuracy = (Number of Correct Predictions / Total Number of Predictions) × 100
 
-14. Most Important Questions for Tomorrow
-Prioritize these 15 questions:
-1. What is dimensionality reduction?
-2. What is PCA?
-3. Why do we use PCA?
-4. What are principal components?
-5. What is explained variance?
-6. What is explained variance ratio?
-7. What are eigenvalues and eigenvectors?
-8. Why is StandardScaler used before PCA?
-9. What is SVD?
-10. What is n_components?
-11. Is PCA supervised or unsupervised?
-12. Does PCA select or create features?
-13. What is the difference between PCA and LDA?
-14. Does PCA always improve accuracy?
-15. How does PCA reduce computational time?
-Important: Your practical specifically asks you to observe the influence of feature reduction on model performance and computational efficiency. Therefore, understand these three comparisons:
-- Original number of features vs reduced number of features.
-- Model accuracy before PCA vs after PCA.
-- Training time before PCA vs after PCA.
-Do not assume accuracy will always increase or execution time will always decrease. The actual result depends on the dataset, algorithm, and number of components selected.
-
-Reference: Official Scikit-learn PCA documentation.
+Practical Workflow
+1. Import Libraries
+   
+   Import Pandas, PCA, StandardScaler, Logistic Regression and evaluation functions.
+2. Load Iris Dataset
+   
+   Read the Iris CSV file.
+3. Separate Features and Target
+   
+   X contains input features and y contains target labels.
+4. Split Dataset
+   
+   Divide data into 80% training and 20% testing.
+5. Apply Standardization
+   
+   Standardize training and testing features.
+6. Train Model Before PCA
+   
+   Train Logistic Regression using all original features.
+7. Calculate Accuracy and Time
+   
+   Measure model accuracy and execution time.
+8. Apply PCA
+   
+   Reduce original features to 2 principal components.
+9. Train Model After PCA
+   
+   Train another Logistic Regression model using reduced features.
+10. Compare Results
+    
+    Compare accuracy and execution time before and after PCA
+"""

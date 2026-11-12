@@ -1,4 +1,4 @@
-Practical 8: K-Means Clustering
+# Practical 8: K-Means Clustering
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
@@ -41,7 +41,7 @@ plt.show()
 
 
 
-\\\\\\
+"""
 Practical 8: K-Means Clustering
 1. Aim
 To apply the K-Means clustering algorithm on a suitable open-access dataset and determine the optimal number of clusters using the Elbow Method or Silhouette Method.
@@ -260,7 +260,47 @@ Python class	KMeans()
 Main library	Scikit-learn
 
 
+Important Formulas
+1. Euclidean Distance
+
+Distance = √[(x2 - x1)² + (y2 - y1)²]
+
+2. Centroid
+
+Centroid = Sum of Data Points in a Cluster / Number of Data Points
+
+3. WCSS
+
+WCSS = Sum of (Distance between each point and its cluster centroid)²
+
+4. K-Means Objective
+
+Minimize WCSS = Sum of squared distances within all clusters
+
+5. Number of Clusters
+
+K = 5
+In this practical, the final model uses five clusters.
+
+Workflow
+1. Import required libraries such as Pandas, Matplotlib and Scikit-learn.
+2. Load the Mall Customers dataset.
+3. Select Annual Income and Spending Score as input features.
+4. Apply StandardScaler to standardize the selected features.
+5. Initialize an empty list called wcss.
+6. Apply the Elbow Method for K values from 1 to 10.
+7. Create and train a K-Means model for each K value.
+8. Calculate WCSS using inertia_ and store the values.
+9. Plot the Elbow graph to identify the suitable number of clusters.
+10. Create the final K-Means model with 5 clusters.
+11. Assign cluster labels to each customer.
+12. Display the first 10 customer records.
+13. Display the total number of unique clusters.
+14. Plot the customer clusters using a scatter plot.
+
 Viva tip: Remember these three points clearly:
 1. K-Means is an unsupervised learning algorithm.
 2. Elbow Method uses inertia to find an approximate optimal K.
+
+"""
 3. Silhouette Method uses a score between -1 and +1 to evaluate cluster quality.

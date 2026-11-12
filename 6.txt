@@ -1,4 +1,4 @@
-Practical 6: Logistic Regression
+# Practical 6: Logistic Regression
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -44,7 +44,7 @@ plt.show()
 
 
 
-\\\\\\\
+"""
 Practical 6: Logistic Regression
 1. Aim
 To implement a binary classification model using Logistic Regression on a suitable open-access dataset and evaluate its performance using a confusion matrix, precision, recall and F1-score.
@@ -273,3 +273,58 @@ Main library	Scikit-learn
 
 
 Important viva tip: Remember the difference between False Positive and False Negative. These are frequently asked in classification practicals.
+
+Important Formulas
+1. Logistic Regression (Sigmoid Function)
+
+P = 1 / (1 + e^(-z))
+
+Where:
+
+z = b0 + b1X1 + b2X2
+- P = Probability of purchase
+- X1 = Age
+- X2 = Estimated Salary
+- b0 = Intercept
+- b1, b2 = Coefficients
+2. Accuracy
+
+Accuracy = (TP + TN) / (TP + TN + FP + FN)
+
+3. Precision
+
+Precision = TP / (TP + FP)
+
+4. Recall
+
+Recall = TP / (TP + FN)
+
+5. F1 Score
+
+F1 Score = 2 × (Precision × Recall) / (Precision + Recall)
+
+6. Confusion Matrix
+	Predicted Positive	Predicted Negative
+Actual Positive	TP	FN
+Actual Negative	FP	TN
+
+Where:
+- TP = True Positive
+- TN = True Negative
+- FP = False Positive
+- FN = False Negative
+
+Workflow
+1. Import the required libraries.
+2. Load the Social Network Ads dataset using Pandas.
+3. Select Age and EstimatedSalary as input features.
+4. Select Purchased as the target variable.
+5. Split the dataset into 80% training and 20% testing data.
+6. Apply StandardScaler to standardize the input features.
+7. Create the Logistic Regression model.
+8. Train the model using the training data.
+9. Predict customer purchase decisions using test data.
+10. Calculate Accuracy, Precision, Recall and F1-score.
+11. Generate the confusion matrix.
+12. Display the confusion matrix using a Seaborn heatmap.
+"""

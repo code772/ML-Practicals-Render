@@ -1,4 +1,4 @@
-Practical 3: Multiple Linear Regression
+# Practical 3: Multiple Linear Regression
 
 import pandas as pd
 import numpy as np
@@ -34,7 +34,7 @@ print("R2 Score:", r2)
 
 
 
-\\\\\\\\
+"""
 Practical 3: Multiple Linear Regression
 Algorithm: Multiple Linear Regression (MLR)
 1. Aim of the Practical
@@ -359,3 +359,81 @@ Remember these three points:
 - RMSE → Lower is better.
 - R² → Generally, closer to 1 is better.
 One important distinction: Multiple Linear Regression predicts continuous values, such as house prices, salaries and temperatures. It is not used for directly predicting categories such as Yes/No or Pass/Fail.
+
+
+Important Formulas
+1. Linear Regression Equation
+
+Y = mX + C
+
+Where:
+- Y = Predicted output
+- X = Input feature
+- m = Slope or coefficient
+- C = Intercept
+For multiple features:
+
+Y = b₀ + b₁X₁ + b₂X₂ + ... + bₙXₙ
+
+2. Mean Squared Error (MSE)
+
+Measures the average squared difference between actual and predicted values.
+
+MSE = Σ(Actual Value − Predicted Value)² / N
+
+3. Root Mean Squared Error (RMSE)
+
+Measures the square root of the average squared prediction error.
+
+RMSE = √MSE
+
+4. R² Score (Coefficient of Determination)
+
+Measures how well the model explains the variation in the target variable.
+
+R² = 1 − (SSres / SStot)
+
+Where:
+- SSres = Sum of Squared Residuals
+- SStot = Total Sum of Squares
+Interpretation:
+- R² = 1 → Perfect prediction.
+- R² = 0 → Model performs like predicting the mean.
+- R² less than 0 → Model performs worse than predicting the mean.
+
+Practical Workflow
+1. Import Required Libraries
+   
+   Import Pandas, NumPy, LinearRegression, train_test_split and evaluation metrics.
+2. Load California Housing Dataset
+   
+   Read the CSV file using Pandas.
+3. Separate Features and Target
+   
+   X contains input features and y contains MedHouseVal.
+4. Split Dataset
+   
+   Divide data into 80% training and 20% testing.
+5. Create Linear Regression Model
+   
+   Initialize the LinearRegression algorithm.
+6. Train the Model
+   
+   Use fit() to train the model using training data.
+7. Make Predictions
+   
+   Use predict() to predict house values for testing data.
+8. Calculate MSE
+   
+   Measure the average squared prediction error.
+9. Calculate RMSE
+   
+   Calculate the square root of MSE.
+10. Calculate R² Score
+    
+    Evaluate how well the model explains the target variation.
+11. Display Results
+    
+    Print MSE, RMSE and R² Score.
+
+"""

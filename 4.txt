@@ -389,3 +389,81 @@ Most expected viva question:
 "Why don't we always use a very high polynomial degree?"
 
 Answer: Because a very high degree can make the model learn noise and unnecessary details from training data, resulting in overfitting and poor performance on unseen data
+
+
+Important Formulas
+1. Polynomial Regression Equation
+
+Y = b₀ + b₁X + b₂X² + b₃X³ + ... + bₙXⁿ
+
+Where:
+- Y = Predicted output
+- X = Input feature
+- b₀ = Intercept
+- b₁, b₂, ... = Coefficients
+- n = Polynomial degree
+2. Mean Squared Error (MSE)
+
+MSE = Σ(Actual Value − Predicted Value)² / N
+
+3. R² Score
+
+R² = 1 − (SSres / SStot)
+
+4. Polynomial Feature Transformation
+
+For degree 2:
+
+X → [1, X, X²]
+
+For degree 3:
+
+X → [1, X, X², X³]
+
+For degree 4:
+
+X → [1, X, X², X³, X⁴]
+
+5. Accuracy / Error Interpretation
+- Lower MSE indicates lower prediction error.
+- Higher R² Score (closer to 1) generally indicates better model performance.
+
+Practical Workflow
+1. Import Required Libraries
+   
+   Import Pandas, NumPy, Matplotlib and Scikit-learn functions.
+2. Load California Housing Dataset
+   
+   Read the CSV file using Pandas.
+3. Select Features and Target
+   
+   X = MedInc (Median Income)
+   
+   y = MedHouseVal (Median House Value).
+4. Split Dataset
+   
+   Divide data into 80% training and 20% testing.
+5. Plot Actual Data
+   
+   Create a scatter plot showing median income and house prices.
+6. Generate Polynomial Degrees
+   
+   Test polynomial degrees 1, 2, 3 and 4.
+7. Transform Features
+   
+   Convert input features into polynomial features using PolynomialFeatures().
+8. Train the Model
+   
+   Train Linear Regression for each polynomial degree.
+9. Make Predictions
+   
+   Predict house prices for training and testing datasets.
+10. Evaluate Model
+    
+    Calculate Training MSE, Testing MSE and Testing R² Score.
+11. Plot Regression Curves
+    
+    Display polynomial curves for all four degrees.
+12. Display Results
+    
+    Compare model performance for different polynomial degrees

@@ -1,4 +1,4 @@
-Practical 4: Polynomial Regression
+# Practical 4: Polynomial Regression
 
 import pandas as pd
 import numpy as np
@@ -57,8 +57,7 @@ plt.show()
 
 
 
-
-\\\\\\\
+"""
 Practical 4: Polynomial Regression
 Algorithm: Polynomial Regression
 1. Aim of the Practical
@@ -467,3 +466,4 @@ Practical Workflow
 12. Display Results
     
     Compare model performance for different polynomial degrees
+"""

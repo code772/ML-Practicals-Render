@@ -1,4 +1,4 @@
-Practical 5(a): Ridge Regression
+# Practical 5(a): Ridge Regression
 
 import pandas as pd
 import numpy as np
@@ -63,7 +63,7 @@ plt.show()
 
 
 
-\\\\\\
+"""
 Practical 5(a): Ridge Regression
 1. Aim
 To implement Ridge Regression on a suitable multivariate dataset and observe its influence on model overfitting and multicollinearity.
@@ -243,3 +243,4 @@ Practical Workflow
 12. Compare Results
     
     Compare the performance of Linear Regression and Ridge Regression.
+"""

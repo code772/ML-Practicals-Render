@@ -1,4 +1,4 @@
-Practical 7(b): Support Vector Machine (SVM) – Nonlinear Kernel
+# Practical 7(b): Support Vector Machine (SVM) – Nonlinear Kernel
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -54,7 +54,7 @@ plt.show()
 
 
 
-///////
+"""
 Practical 7(b): Support Vector Machine (SVM) – Nonlinear Kernel
 1. Aim
 To implement an SVM classifier using a Nonlinear Kernel on a suitable open-access dataset and compare its classification performance with the Linear Kernel.
@@ -208,3 +208,58 @@ When comparing Linear and Nonlinear SVM, remember:
 - If RBF SVM gives better test performance, nonlinear patterns may be important.
 - If training performance is high but test performance is low, the model may be overfitting.
 Viva tip: Be prepared to explain the difference between C and Gamma, the meaning of support vectors, and why feature scaling is important in SVM.
+
+Important Formulas
+1. Linear Kernel
+
+K(X, Y) = X · Y
+
+2. RBF Kernel
+
+K(X, Y) = exp(-gamma × ||X - Y||²)
+
+Where:
+- X and Y = Data points
+- gamma = Controls the influence of individual data points.
+- exp = Exponential function.
+3. Accuracy
+
+Accuracy = (TP + TN) / (TP + TN + FP + FN)
+
+4. Precision
+
+Precision = TP / (TP + FP)
+
+5. Recall
+
+Recall = TP / (TP + FN)
+
+6. F1 Score
+
+F1 Score = 2 × (Precision × Recall) / (Precision + Recall)
+
+7. House Category
+
+HouseCategory = 1, if MedHouseVal > Median
+
+HouseCategory = 0, otherwise
+
+
+4. Workflow
+1. Import required libraries.
+2. Load the California Housing dataset.
+3. Calculate the median of the MedHouseVal column.
+4. Create a new column called HouseCategory.
+5. Assign 1 to houses above the median and 0 to the remaining houses.
+6. Separate input features (X) and target variable (y).
+7. Split the dataset into 80% training and 20% testing data using stratification.
+8. Apply StandardScaler to standardize the input features.
+9. Create an SVM model using the Linear Kernel.
+10. Train the Linear Kernel model and predict the output.
+11. Create another SVM model using the RBF Kernel.
+12. Train the RBF Kernel model and predict the output.
+13. Calculate Accuracy, Precision, Recall and F1-score for both models.
+14. Generate the confusion matrix for the RBF Kernel model.
+15. Display the confusion matrix using a heatmap.
+
+"""

@@ -1,4 +1,4 @@
-Practical 1: Feature Engineering
+# Practical 1: Feature Engineering
 
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder, StandardScaler
@@ -47,8 +47,7 @@ df.to_csv("cleaned_dataset.csv")
 
 
 
-
-////////
+"""
 Practical 1: Feature Engineering
 Dataset: Titanic Dataset
 1. Aim of the Practical
@@ -277,20 +276,37 @@ Uses minimum and maximum values	Uses mean and standard deviation
 Also called Min-Max Scaling	Also called Z-score Scaling
 
 
-9. Most Important Questions for Tomorrow
-If you have limited preparation time, prioritize these:
-1. What is Feature Engineering?
-2. What is data preprocessing?
-3. What is the Titanic dataset?
-4. What is a feature and target variable?
-5. Why do we handle missing values?
-6. Difference between mean, median and mode.
-7. What is Label Encoding?
-8. What is One-Hot Encoding?
-9. Difference between encoding techniques.
-10. What is Feature Scaling?
-11. Difference between normalization and standardization.
-12. What is fit_transform()?
-13. What is data leakage?
-14. Why is scaling required?
-15. What type of ML problem is Titanic survival prediction?
+Practical Workflow
+1. Import Required Libraries
+   
+   Import Pandas and Scikit-learn preprocessing functions.
+2. Load Titanic Dataset
+   
+   Read the Titanic CSV file using pd.read_csv().
+3. Display Original Dataset
+   
+   Use head() to display the first five rows.
+4. Check Missing Values
+   
+   Use isnull().sum() to identify missing values in each column.
+5. Handle Missing Values
+   - Age → Replace with mean.
+   - Fare → Replace with mean.
+   - Embarked → Replace with mode.
+6. Remove Unnecessary Columns
+   
+   Remove PassengerId, Name, Ticket and Cabin.
+7. Encode Categorical Variables
+   - Label Encoding for Sex.
+   - One-Hot Encoding for Embarked.
+8. Perform Feature Scaling
+   
+   Apply StandardScaler to numerical columns.
+9. Display Final Dataset
+   
+   Display the transformed and scaled dataset.
+10. Save Cleaned Dataset
+    
+    Export the processed dataset into cleaned_dataset.csv.
+
+"""

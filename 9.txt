@@ -1,4 +1,4 @@
-Practical 9: DBSCAN Clustering
+# Practical 9: DBSCAN Clustering
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.cluster import DBSCAN
@@ -32,7 +32,7 @@ plt.show()
 
 
 
-///////
+"""
 Practical 9: DBSCAN Clustering
 1. Aim
 To employ a density-based clustering algorithm such as DBSCAN on a suitable open-access dataset to identify the clustering structure and noise points.
@@ -239,3 +239,42 @@ Main library	Scikit-learn
 
 DBSCAN vs K-Means: One-line viva answer
 K-Means forms clusters around centroids, whereas DBSCAN forms clusters based on the density of neighbouring data points and can identify noise points.
+
+Important Formulas
+1. Euclidean Distance
+
+Distance = √[(x2 - x1)² + (y2 - y1)²]
+
+2. Epsilon Neighbourhood
+
+Nε(P) = {Q : Distance(P, Q) ≤ ε}
+
+It represents all points within the epsilon distance of point P.
+
+3. Core Point Condition
+
+Number of points in Epsilon Neighbourhood ≥ min_samples
+
+4. DBSCAN Parameters
+- eps = 0.5
+- min_samples = 5
+5. Number of Clusters
+
+Total Clusters = Number of Unique Labels - Noise Label (if present)
+
+4. Workflow
+1. Import required libraries such as Pandas, Matplotlib and Scikit-learn.
+2. Load the Make Moons dataset using pd.read_csv().
+3. Select Feature_1 and Feature_2 as input features.
+4. Apply StandardScaler to standardize the input data.
+5. Create a DBSCAN model with eps=0.5 and min_samples=5.
+6. Apply fit_predict() to identify clusters.
+7. Store the cluster labels in a new column called Cluster.
+8. Display the complete dataset with cluster labels.
+9. Count the number of unique clusters.
+10. Exclude the noise label -1 from the cluster count.
+11. Count the number of noise points.
+12. Plot the clusters using a scatter plot.
+13. Display the graph.
+
+"""

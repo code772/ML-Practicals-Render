@@ -310,3 +310,1212 @@ Practical Workflow
     Export the processed dataset into cleaned_dataset.csv.
 
 """
+
+
+
+
+"""
+"""
+Practical 1: Feature Engineering
+1. Definition
+Feature Engineering is the process of converting raw data into meaningful features that help a Machine Learning model learn better and make accurate predictions.
+
+In simple words, it means cleaning, transforming and preparing the dataset before giving it to a machine learning algorithm.
+2. Important concepts
+1. Missing Value Handling
+
+Missing values are empty or unavailable values in a dataset.
+
+Methods to handle missing values:
+- Mean Imputation: Replace missing numerical values with the mean.
+- Median Imputation: Replace missing values with the middle value.
+- Mode Imputation: Replace missing categorical values with the most frequent value.
+- Dropping: Remove rows or columns containing missing values.
+2. Categorical Encoding
+
+Converting text-based categorical data into numerical values.
+
+Two common techniques:
+
+- Label Encoding: Assigns a unique integer to each category.
+
+Example: Male = 0, Female = 1.
+
+- One-Hot Encoding: Creates separate binary columns for each category.
+
+Example:
+Color	Red	Blue	Green
+Red	1	0	0
+Blue	0	1	0
+Green	0	0	1
+
+3. Feature Scaling
+
+Feature scaling brings numerical features into a similar range so that features with larger values do not dominate the learning process.
+
+Two common methods:
+- Min-Max Scaling
+- Standardization
+3. Important formulas
+Mean Imputation
+\[
+Mean = \frac{\sum_{i=1}^{n}x_i}{n}
+\]
+
+Median: Middle value after arranging data in ascending order.
+
+Mode: Most frequently occurring value.
+
+Min-Max Scaling
+\[
+X'=\frac{X-X_{min}}{X_{max}-X_{min}}
+\]
+
+It generally converts values into the range 0 to 1.
+
+Standardization (Z-score)
+\[
+Z=\frac{X-\mu}{\sigma}
+\]
+
+Where:
+- \(X\) = Original value
+- \(\mu\) = Mean
+- \(\sigma\) = Standard deviation
+Standard deviation
+\[
+\sigma=\sqrt{\frac{\sum(X_i-\mu)^2}{n}}
+\]
+
+4. Important terms
+Term	Meaning
+Dataset	Collection of data
+Feature	Input variable or column
+Target	Output variable to predict
+Numerical data	Data represented by numbers
+Categorical data	Data represented by categories
+Imputation	Replacing missing values
+Scaling	Bringing values to a similar scale
+Preprocessing	Preparing raw data for ML
+
+5. Python libraries
+- Pandas – Data manipulation.
+- NumPy – Numerical calculations.
+- Scikit-learn – Preprocessing techniques.
+- Matplotlib – Data visualization.
+
+Practical 2(a): Dimensionality Reduction Using PCA
+Unsupervised Learning
+1. Definition
+Principal Component Analysis (PCA) is a dimensionality reduction technique that reduces the number of features in a dataset while preserving as much important information (variance) as possible.
+
+In simple words, PCA converts many original features into a smaller number of new features called Principal Components.
+2. Why do we use PCA?
+- Reduces the number of features.
+- Removes redundant information.
+- Reduces computational complexity.
+- Helps visualize high-dimensional data.
+- Can reduce noise and overfitting.
+3. Important concepts
+1. Dimensionality: Number of features or columns in a dataset.
+
+2. Variance: Measures how much data values are spread around their mean.
+
+3. Covariance: Measures how two variables change together.
+
+4. Principal Components: New variables created by combining original features.
+- PC1 captures the maximum possible variance.
+- PC2 captures the maximum remaining variance and is perpendicular to PC1.
+- Other components capture progressively less remaining variance.
+5. Eigenvalues: Represent the amount of variance captured by each principal component.
+
+6. Eigenvectors: Represent the directions of the principal components.
+4. PCA working steps
+1. Standardize the dataset.
+2. Calculate the covariance matrix.
+3. Calculate eigenvalues and eigenvectors.
+4. Sort eigenvalues in descending order.
+5. Select the required principal components.
+6. Transform the original dataset into reduced dimensions.
+5. Important formulas
+Mean
+\[
+\mu=\frac{1}{n}\sum_{i=1}^{n}X_i
+\]
+
+Standardization
+\[
+Z=\frac{X-\mu}{\sigma}
+\]
+
+Covariance
+\[
+Cov(X,Y)=\frac{\sum(X_i-\bar X)(Y_i-\bar Y)}{n-1}
+\]
+
+Covariance Matrix
+\[
+C=\frac{1}{n-1}Z^TZ
+\]
+
+Eigenvalue equation
+\[
+Cv=\lambda v
+\]
+
+Where:
+- \(C\) = Covariance matrix
+- \(v\) = Eigenvector
+- \(\lambda\) = Eigenvalue
+Explained Variance Ratio
+\[
+EVR=\frac{\lambda_i}{\sum_j\lambda_j}
+\]
+
+Cumulative Explained Variance
+\[
+CEV=\sum_{i=1}^{k}EVR_i
+\]
+
+It tells us how much total information is retained by the selected components.
+6. Important terms
+Term	Meaning
+PCA	Principal Component Analysis
+Eigenvalue	Amount of variance captured
+Eigenvector	Direction of a principal component
+Variance	Spread of data
+Covariance	Relationship between two variables
+Explained variance	Information retained by a component
+Dimensionality reduction	Reducing the number of features
+
+
+Practical 2(b): Dimensionality Reduction Using LDA
+Supervised Learning
+1. Definition
+Linear Discriminant Analysis (LDA) is a supervised dimensionality reduction technique used to reduce the number of features while maximizing the separation between different classes.
+
+In simple words, LDA finds the best directions to separate different categories of data.
+
+Example: Separating different types of flowers based on their features.
+2. Why do we use LDA?
+- Reduces dimensionality.
+- Improves class separation.
+- Helps in classification.
+- Reduces computational complexity.
+- Can improve classification performance.
+3. Important concepts
+1. Class: A category or group to which a data point belongs.
+
+2. Within-Class Scatter: Measures how spread out the data points are within the same class.
+
+3. Between-Class Scatter: Measures how far apart different class means are.
+
+4. Discriminant Function: A function that finds the best direction to separate classes.
+
+5. Class Separation: The ability to distinguish one category from another.
+4. LDA working steps
+1. Calculate the mean of each class.
+2. Calculate the overall mean.
+3. Calculate within-class scatter matrix.
+4. Calculate between-class scatter matrix.
+5. Find eigenvalues and eigenvectors.
+6. Select the best discriminant components.
+7. Transform the original data into reduced dimensions.
+5. Important formulas
+Class Mean
+\[
+\mu_k=\frac{1}{N_k}\sum_{x\in C_k}x
+\]
+
+Overall Mean
+\[
+\mu=\frac{1}{N}\sum_{i=1}^{N}x_i
+\]
+
+Within-Class Scatter Matrix
+\[
+S_W=\sum_{k=1}^{c}\sum_{x\in C_k}
+(x-\mu_k)(x-\mu_k)^T
+\]
+
+Between-Class Scatter Matrix
+\[
+S_B=\sum_{k=1}^{c}N_k
+(\mu_k-\mu)(\mu_k-\mu)^T
+\]
+
+LDA Objective Function
+\[
+J(W)=\frac{|W^TS_BW|}{|W^TS_WW|}
+\]
+
+LDA tries to maximize between-class separation and minimize within-class spread.
+
+Maximum number of LDA components
+\[
+Components\leq \min(n\_features,c-1)
+\]
+
+Where \(c\) is the number of classes.
+6. PCA vs LDA
+PCA	LDA
+Unsupervised technique	Supervised technique
+Does not use class labels	Uses class labels
+Maximizes variance	Maximizes class separation
+Used for data compression	Used for classification and separation
+Components are based on variance	Components are based on class discrimination
+
+Important viva point: PCA can retain at most the number of original features, while LDA can produce at most \(c-1\) discriminant components for \(c\) classes.
+
+Practical 3: Multiple Linear Regression
+1. Definition
+Multiple Linear Regression is a supervised machine learning algorithm used to predict a continuous numerical value using two or more independent variables.
+
+Example: Predicting house prices using area, number of bedrooms, location score and age of the house.
+2. Important concepts
+1. Dependent Variable: The output variable we want to predict.
+
+2. Independent Variables: Input variables used to predict the output.
+
+3. Regression: A technique used to predict continuous numerical values.
+
+4. Coefficient: Represents the change in predicted output for a one-unit change in an input feature, keeping other features constant.
+
+5. Intercept: Predicted output when all input features are zero.
+
+6. Residual: Difference between actual and predicted values.
+3. Important formula
+Multiple Linear Regression Equation
+\[
+Y=b_0+b_1X_1+b_2X_2+\cdots+b_nX_n
+\]
+
+Where:
+- \(Y\) = Predicted output
+- \(b_0\) = Intercept
+- \(b_1,b_2\) = Regression coefficients
+- \(X_1,X_2\) = Independent variables
+4. Evaluation metrics
+1. Mean Squared Error (MSE)
+
+Measures the average squared difference between actual and predicted values.
+\[
+MSE=\frac{1}{n}\sum_{i=1}^{n}(Y_i-\hat Y_i)^2
+\]
+
+Lower MSE indicates better predictions.
+
+2. Root Mean Squared Error (RMSE)
+
+Square root of MSE.
+\[
+RMSE=\sqrt{MSE}
+\]
+
+It is expressed in the same unit as the target variable.
+
+3. R-squared (R²)
+
+Measures how much variation in the target variable is explained by the model.
+\[
+R^2=1-\frac{SS_{res}}{SS_{tot}}
+\]
+
+Where:
+\[
+SS_{res}=\sum(Y_i-\hat Y_i)^2
+\]
+
+\[
+SS_{tot}=\sum(Y_i-\bar Y)^2
+\]
+
+A higher R² generally indicates a better fit.
+5. Important terms
+Term	Meaning
+Regression	Predicting continuous values
+Intercept	Constant term
+Coefficient	Effect of an input feature
+Residual	Actual value − predicted value
+MSE	Average squared prediction error
+RMSE	Square root of MSE
+R²	Explained variation
+
+
+Practical 4: Polynomial Regression
+1. Definition
+Polynomial Regression is a regression technique that models the relationship between independent and dependent variables using polynomial equations.
+
+It is useful when the relationship between variables is nonlinear or curved.
+
+Example: Predicting the growth of a plant over time when growth does not follow a straight line.
+2. Important concepts
+1. Polynomial: An expression containing variables with different powers.
+
+2. Degree: The highest power of the independent variable.
+
+3. Underfitting: When the model is too simple to capture the actual pattern.
+
+4. Overfitting: When the model learns the training data too closely, including noise.
+
+5. Bias: Error caused by overly simple assumptions.
+
+6. Variance: How much the model's predictions change with different training datasets.
+
+7. Bias-Variance Trade-off: Balancing bias and variance to achieve good performance on unseen data.
+3. Polynomial regression equation
+\[
+Y=b_0+b_1X+b_2X^2+\cdots+b_nX^n
+\]
+
+Where:
+- \(n\) = Polynomial degree.
+- \(b_0,b_1,\ldots,b_n\) = Coefficients.
+Different polynomial degrees
+Degree	Equation	Model
+1	\(Y=b_0+b_1X\)	Straight line
+2	\(Y=b_0+b_1X+b_2X^2\)	Quadratic curve
+3	\(Y=b_0+b_1X+b_2X^2+b_3X^3\)	Cubic curve
+
+4. Bias-Variance Trade-off
+
+
+
+
+
+
+
+
+medium.com
+
+
+- Low-degree polynomial: May cause underfitting.
+- Suitable degree: Captures the actual relationship.
+- Very high degree: May cause overfitting.
+5. Important formulas
+Mean Squared Error
+\[
+MSE=\frac{1}{n}\sum(Y_i-\hat Y_i)^2
+\]
+
+Bias-Variance Decomposition (conceptual)
+\[
+Expected\ Error=Bias^2+Variance+Noise
+\]
+
+Important point: Increasing polynomial degree increases model complexity, but it does not always improve prediction on unseen data.
+
+Practical 5(a): Ridge Regression
+1. Definition
+Ridge Regression is a regularization technique used in linear regression to reduce overfitting by adding a penalty term based on the squared values of model coefficients.
+
+It is also called L2 Regularization.
+2. Why do we use Ridge Regression?
+- Reduces overfitting.
+- Controls large coefficient values.
+- Helps handle multicollinearity.
+- Improves model generalization.
+- Keeps all features in the model, generally with smaller coefficients.
+3. Important concepts
+1. Regularization: A technique that adds a penalty to the model to prevent excessive complexity.
+
+2. Overfitting: Model performs well on training data but poorly on unseen data.
+
+3. Multicollinearity: When two or more independent variables are highly correlated.
+
+4. Alpha (λ): Controls the strength of regularization.
+- Small alpha: Weak regularization.
+- Large alpha: Strong regularization.
+4. Important formula
+Ridge Regression Cost Function
+\[
+J(\beta)=\sum_{i=1}^{n}(y_i-\hat y_i)^2
++\lambda\sum_{j=1}^{p}\beta_j^2
+\]
+
+Where:
+- First term = Sum of Squared Errors.
+- Second term = L2 penalty.
+- \(\lambda\) = Regularization strength.
+- \(\beta_j\) = Model coefficients.
+Important: Ridge shrinks coefficients towards zero but generally does not make them exactly zero.
+
+Practical 5(b): Lasso Regression
+1. Definition
+Lasso Regression is a regularization technique used to reduce overfitting and perform feature selection by adding a penalty based on the absolute values of model coefficients.
+
+It is also called L1 Regularization.
+2. Why do we use Lasso Regression?
+- Reduces overfitting.
+- Performs automatic feature selection.
+- Removes less important features by making some coefficients exactly zero.
+- Creates simpler models.
+- Helps improve model interpretability.
+3. Important concepts
+1. Feature Selection: Selecting only important input variables.
+
+2. Sparse Model: A model containing many zero coefficients.
+
+3. L1 Penalty: Sum of absolute coefficient values.
+
+4. Alpha: Controls the strength of the penalty.
+4. Important formula
+Lasso Regression Cost Function
+\[
+J(\beta)=\sum_{i=1}^{n}(y_i-\hat y_i)^2
++\lambda\sum_{j=1}^{p}|\beta_j|
+\]
+
+Where:
+- First term = Prediction error.
+- Second term = L1 penalty.
+- \(\lambda\) = Regularization strength.
+Important: Lasso can make some coefficients exactly zero, which means those features are excluded from the model.
+5. Ridge vs Lasso
+Ridge Regression	Lasso Regression
+L2 regularization	L1 regularization
+Uses squared coefficients	Uses absolute coefficients
+Shrinks coefficients	Can make coefficients zero
+Generally keeps all features	Performs feature selection
+Useful for multicollinearity	Useful for sparse models
+
+Easy memory trick:
+- Ridge = Reduces coefficient size.
+- Lasso = Eliminates less important features.
+
+Practical 6: Logistic Regression
+1. Definition
+Logistic Regression is a supervised machine learning algorithm used for classification problems. It predicts the probability of an input belonging to a particular class.
+
+Although its name contains regression, it is mainly used for classification.
+
+Example:
+- Email: Spam or Not Spam.
+- Patient: Disease or No Disease.
+- Transaction: Fraud or Not Fraud.
+2. Important concepts
+1. Classification: Predicting a category or class.
+
+2. Binary Classification: Classification involving only two classes (0 and 1).
+
+3. Probability: Likelihood of an event occurring, ranging from 0 to 1.
+
+4. Sigmoid Function: Converts any real-valued input into a probability between 0 and 1.
+
+5. Decision Threshold: A probability cutoff used to assign a class. The default is usually 0.5.
+
+6. Confusion Matrix: A table used to compare actual and predicted classes.
+3. Important formulas
+1. Logistic Regression Equation
+\[
+z=b_0+b_1X_1+\cdots+b_nX_n
+\]
+
+2. Sigmoid Function
+\[
+\sigma(z)=\frac{1}{1+e^{-z}}
+\]
+
+Output is always between 0 and 1.
+
+Classification rule:
+\[
+Prediction=
+\begin{cases}
+1 & P\geq 0.5\\
+0 & P<0.5
+\end{cases}
+\]
+
+3. Log Loss
+\[
+L=-\frac{1}{n}\sum_{i=1}^{n}
+[y_i\log(p_i)+(1-y_i)\log(1-p_i)]
+\]
+
+Lower log loss indicates better probability predictions.
+4. Confusion Matrix
+
+
+
+
+
+
+
+
+hex.tech
+
+
+A confusion matrix contains four important values:
+Term	Meaning
+TP	Actual positive predicted positive
+TN	Actual negative predicted negative
+FP	Actual negative predicted positive
+FN	Actual positive predicted negative
+
+Example: In disease prediction:
+- TP: Patient has disease and model predicts disease.
+- TN: Patient has no disease and model predicts no disease.
+- FP: Patient has no disease but model predicts disease.
+- FN: Patient has disease but model predicts no disease.
+5. Evaluation metrics
+1. Accuracy
+
+Percentage of total correct predictions.
+\[
+Accuracy=\frac{TP+TN}{TP+TN+FP+FN}
+\]
+
+2. Precision
+
+Out of all predicted positive cases, how many are actually positive?
+\[
+Precision=\frac{TP}{TP+FP}
+\]
+
+3. Recall
+
+Out of all actual positive cases, how many did the model correctly identify?
+\[
+Recall=\frac{TP}{TP+FN}
+\]
+
+4. F1-Score
+
+Harmonic mean of precision and recall.
+\[
+F1=2\times\frac{Precision\times Recall}
+{Precision+Recall}
+\]
+
+5. Specificity
+
+Measures the proportion of actual negative cases correctly identified.
+\[
+Specificity=\frac{TN}{TN+FP}
+\]
+
+6. Important terms
+Term	Meaning
+Logistic Regression	Classification algorithm
+Sigmoid	Converts output into probability
+Threshold	Cutoff for class prediction
+Confusion Matrix	Actual vs predicted comparison
+Precision	Correctness of positive predictions
+Recall	Ability to identify positive cases
+F1-score	Balance between precision and recall
+
+
+Practical 7(a): Support Vector Machine (SVM) – Linear Kernel
+Supervised Learning
+1. Definition
+Support Vector Machine (SVM) is a supervised machine learning algorithm used for classification and regression. It finds the optimal decision boundary (hyperplane) that separates different classes of data.
+
+A Linear SVM uses a straight-line boundary in two dimensions or a flat hyperplane in higher dimensions.
+2. Important concepts
+1. Hyperplane: A decision boundary that separates different classes.
+
+2. Support Vectors: Data points closest to the decision boundary.
+
+3. Margin: Distance between the decision boundary and the nearest data points of each class.
+
+4. Maximum Margin: SVM tries to find the boundary with the largest possible margin.
+
+5. Kernel: A function that helps SVM handle different types of data relationships.
+
+6. C Parameter: Controls the trade-off between maximizing the margin and minimizing classification errors.
+- Small C: Allows more classification errors and encourages a wider margin.
+- Large C: Penalizes classification errors more strongly.
+3. Linear SVM formula
+Hyperplane Equation
+\[
+w^Tx+b=0
+\]
+
+Where:
+- \(w\) = Weight vector.
+- \(x\) = Input features.
+- \(b\) = Bias.
+Decision Function
+\[
+f(x)=w^Tx+b
+\]
+
+Classification:
+\[
+f(x)\geq0 \Rightarrow Class\ +1
+\]
+
+\[
+f(x)<0 \Rightarrow Class\ -1
+\]
+
+Margin Width
+\[
+Margin=\frac{2}{||w||}
+\]
+
+SVM tries to maximize this margin.
+4. Important terms
+Term	Meaning
+SVM	Support Vector Machine
+Hyperplane	Decision boundary
+Support Vectors	Closest data points to boundary
+Margin	Distance between boundary and support vectors
+Linear Kernel	Creates a linear decision boundary
+C	Regularization parameter
+
+
+Practical 7(b): SVM – Nonlinear Kernel
+1. Definition
+A Nonlinear SVM is an SVM model that uses a nonlinear kernel function to separate data that cannot be separated effectively using a straight-line decision boundary in the original feature space.
+
+Example: When two classes are arranged in circular patterns, a linear boundary may not separate them correctly.
+2. Important concepts
+1. Kernel Trick: A technique that allows SVM to calculate relationships in a higher-dimensional feature space without explicitly transforming all the data into that space.
+
+2. Nonlinear Decision Boundary: A curved or complex boundary used to separate classes.
+
+3. RBF Kernel: Radial Basis Function kernel, commonly used to handle nonlinear data.
+
+4. Gamma (γ): Controls how far the influence of a single training point extends.
+- Low gamma: Wider influence and smoother decision boundary.
+- High gamma: Narrower influence and more complex decision boundary.
+3. Important kernel formulas
+1. Linear Kernel
+\[
+K(x,y)=x^Ty
+\]
+
+2. Polynomial Kernel
+\[
+K(x,y)=(\gamma x^Ty+r)^d
+\]
+
+3. RBF Kernel
+\[
+K(x,y)=e^{-\gamma||x-y||^2}
+\]
+
+Where:
+- \(x,y\) = Data points.
+- \(\gamma\) = Gamma parameter.
+- \(d\) = Polynomial degree.
+- \(r\) = Constant term.
+4. Linear SVM vs Nonlinear SVM
+Linear SVM	Nonlinear SVM
+Uses linear kernel	Uses RBF or polynomial kernel
+Straight decision boundary	Curved/complex boundary
+Suitable for linearly separable data	Suitable for nonlinear data
+Generally simpler	Can be computationally expensive
+Fewer parameters to tune	Requires kernel parameter tuning
+
+Important viva point: Both linear and nonlinear SVM can be evaluated using accuracy, precision, recall, F1-score and confusion matrix.
+
+Practical 8: K-Means Clustering
+Unsupervised Learning
+1. Definition
+K-Means Clustering is an unsupervised machine learning algorithm that divides a dataset into K clusters based on similarity between data points.
+
+Each cluster has a central point called a centroid.
+
+Example: Dividing customers into different groups based on their purchasing behaviour.
+2. Important concepts
+1. Clustering: Grouping similar data points together.
+
+2. K: Number of clusters to be created.
+
+3. Centroid: Centre of a cluster, calculated as the mean of its data points.
+
+4. Euclidean Distance: Measures the straight-line distance between two data points.
+
+5. Inertia: Sum of squared distances between data points and their assigned cluster centroids.
+
+6. Elbow Method: A method used to determine the optimal number of clusters.
+
+7. Silhouette Score: Measures how well a data point fits into its assigned cluster compared with other clusters.
+3. Working of K-Means
+
+
+
+
+
+
+
+
+medium.com
+
+
+1. Select the number of clusters K.
+2. Randomly initialize K centroids.
+3. Assign each data point to its nearest centroid.
+4. Recalculate the centroid of each cluster.
+5. Repeat assignment and recalculation.
+6. Stop when centroids no longer change significantly.
+4. Important formulas
+1. Euclidean Distance
+\[
+d(x,y)=\sqrt{\sum_{i=1}^{n}(x_i-y_i)^2}
+\]
+
+2. Centroid Calculation
+\[
+\mu_k=\frac{1}{N_k}\sum_{i=1}^{N_k}x_i
+\]
+
+Where:
+- \(\mu_k\) = Centroid of cluster k.
+- \(N_k\) = Number of points in cluster k.
+3. K-Means Objective Function (Inertia)
+\[
+J=\sum_{k=1}^{K}\sum_{x_i\in C_k}
+||x_i-\mu_k||^2
+\]
+
+K-Means tries to minimize this value.
+5. Elbow Method
+
+
+
+
+
+
+
+
+medium.com
+
+
+The Elbow Method helps identify the optimal K value.
+
+Steps:
+1. Run K-Means for different K values.
+2. Calculate inertia for each K.
+3. Plot K against inertia.
+4. Identify the elbow point where the reduction in inertia starts slowing down.
+The elbow point is a reasonable choice for K.
+6. Silhouette Score
+\[
+S=\frac{b-a}{\max(a,b)}
+\]
+
+Where:
+- \(a\) = Average distance to points in the same cluster.
+- \(b\) = Minimum average distance to points in another cluster.
+Score	Interpretation
+Close to +1	Well-clustered
+Around 0	Overlapping clusters
+Close to -1	Possibly incorrectly clustered
+
+
+Practical 9: DBSCAN Clustering
+1. Definition
+DBSCAN (Density-Based Spatial Clustering of Applications with Noise) is an unsupervised clustering algorithm that groups closely packed data points into clusters and identifies isolated points as noise or outliers.
+
+Unlike K-Means, DBSCAN does not require the number of clusters to be specified in advance.
+2. Important concepts
+DBSCAN uses two important parameters:
+
+1. Epsilon (ε):
+
+The maximum distance within which neighbouring points are considered.
+
+2. MinPts:
+
+Minimum number of neighbouring points required to form a dense region.
+Three types of points
+
+
+
+
+
+
+
+
+mdpi.com
+
+
+1. Core Point: A point having at least MinPts points within its epsilon neighbourhood, including itself.
+
+2. Border Point: A point that is within the neighbourhood of a core point but does not itself have enough neighbours to be a core point.
+
+3. Noise Point: A point that is neither a core point nor a border point.
+3. Working of DBSCAN
+1. Select epsilon and MinPts.
+2. Select an unvisited point.
+3. Find its neighbouring points within epsilon distance.
+4. If the number of neighbours is sufficient, form a cluster.
+5. Expand the cluster by adding density-reachable points.
+6. If the point does not meet the density requirement, mark it as noise temporarily.
+7. Continue until all points are visited.
+4. Important formulas
+Euclidean Distance
+\[
+d(p,q)=\sqrt{\sum_{i=1}^{n}(p_i-q_i)^2}
+\]
+
+Epsilon Neighbourhood
+\[
+N_\epsilon(p)=\{q:d(p,q)\leq\epsilon\}
+\]
+
+Core Point Condition
+\[
+|N_\epsilon(p)|\geq MinPts
+\]
+
+5. K-Means vs DBSCAN
+K-Means	DBSCAN
+Requires K value	Does not require cluster count
+Uses centroids	Uses density
+Sensitive to outliers	Can identify noise points
+Best for compact clusters	Can identify irregularly shaped clusters
+Every point is assigned to a cluster	Some points can be noise
+
+Important viva point: DBSCAN is useful when the dataset contains noise and clusters have irregular shapes.
+
+Practical 10: Ensemble Learning
+1. Definition
+Ensemble Learning is a machine learning technique that combines multiple models to produce better predictions than a single individual model.
+
+In simple words, instead of depending on one model, we combine several models to improve accuracy, stability and performance.
+
+Example: Combining predictions from multiple decision trees to predict whether a customer will purchase a product.
+2. Important concepts
+1. Ensemble: Combination of multiple machine learning models.
+
+2. Base Learner: An individual model used in an ensemble.
+
+3. Bagging: Trains multiple models independently on different random samples of the training data and combines their predictions.
+
+4. Boosting: Trains models sequentially, where each new model focuses on correcting the errors made by previous models.
+
+5. Random Forest: An ensemble algorithm that combines multiple decision trees.
+
+6. Decision Tree: A tree-based algorithm that makes decisions using conditions on features.
+
+7. Voting: Combining predictions from multiple models.
+3. Types of Ensemble Learning
+
+
+
+
+
+
+
+
+
+
+1. Bagging (Bootstrap Aggregating)
+- Models are trained independently.
+- Uses random samples with replacement.
+- Combines predictions through voting or averaging.
+- Reduces variance and overfitting.
+
+
+
+
+
+
+
+
+
+
+
+
+
+2. Boosting
+- Models are trained sequentially.
+- Each new model focuses on previous errors.
+- Combines weak learners into a strong learner.
+- Can reduce bias and improve prediction performance.
+
+
+
+4. Random Forest
+Definition: Random Forest is an ensemble learning algorithm that combines multiple decision trees to produce a final prediction.
+
+For classification, it uses majority voting. For regression, it generally uses the average of predictions.
+
+Working:
+1. Create multiple random samples from the dataset.
+2. Train a decision tree on each sample.
+3. Each tree makes its own prediction.
+4. Combine the predictions.
+5. Generate the final output.
+Important formulas
+
+Classification using majority voting:
+\[
+\hat y=Mode(T_1,T_2,\ldots,T_n)
+\]
+
+Regression using averaging:
+\[
+\hat y=\frac{1}{n}\sum_{i=1}^{n}T_i(x)
+\]
+
+Where \(T_i\) represents the prediction from an individual tree.
+5. Boosting
+Definition: Boosting is an ensemble technique that combines weak learners sequentially to create a stronger predictive model.
+
+Example: AdaBoost, Gradient Boosting and XGBoost.
+
+AdaBoost Weight Update Formula
+\[
+\alpha_t=\frac{1}{2}\ln
+\left(\frac{1-\epsilon_t}{\epsilon_t}\right)
+\]
+
+Where:
+- \(\alpha_t\) = Weight of the learner.
+- \(\epsilon_t\) = Error rate of the learner.
+A learner with a lower error receives a higher weight.
+6. Evaluation metrics
+Ensemble models can be compared with a baseline model using:
+- Accuracy
+- Precision
+- Recall
+- F1-score
+- Confusion Matrix
+For classification:
+\[
+Accuracy=\frac{Correct\ Predictions}{Total\ Predictions}
+\]
+
+7. Important terms
+Term	Meaning
+Ensemble Learning	Combining multiple models
+Base Learner	Individual model
+Bagging	Parallel model training
+Boosting	Sequential model training
+Random Forest	Combination of decision trees
+Weak Learner	Model performing slightly better than random guessing
+Majority Voting	Selecting the most frequently predicted class
+Baseline Model	Model used for performance comparison
+
+Important viva point: Random Forest mainly reduces variance through bagging, while boosting focuses on correcting errors made by earlier learners.
+
+Practical 11: Reinforcement Learning – Q-Learning
+Reinforcement Learning
+1. Definition
+Reinforcement Learning (RL) is a type of machine learning in which an agent learns to make decisions by interacting with an environment and receiving rewards or penalties for its actions.
+
+In simple words, the machine learns through trial and error.
+
+Example: A robot learning how to reach a destination while avoiding obstacles.
+2. Important concepts
+1. Agent: The learner or decision-maker.
+
+Example: A robot or game player.
+
+2. Environment: The surroundings in which the agent operates.
+
+Example: A grid world or game board.
+
+3. State: The current situation of the agent.
+
+Example: Current position in a grid.
+
+4. Action: The decision taken by the agent.
+
+Example: Moving left, right, up or down.
+
+5. Reward: Feedback received after taking an action.
+
+Example:
+- +10 for reaching the destination.
+- -10 for hitting an obstacle.
+- -1 for each unnecessary movement.
+6. Policy: A strategy that tells the agent which action to take in a given state.
+
+7. Episode: One complete learning attempt from the initial state until a terminal state is reached.
+
+8. Q-Value: Expected future reward for taking a particular action in a particular state.
+3. What is Q-Learning?
+Q-Learning is a model-free reinforcement learning algorithm that learns the best action to take in each state by updating Q-values through experience.
+
+It does not require prior knowledge of the environment's transition rules.
+4. Important concepts of Q-Learning
+1. Q-Table
+
+A table that stores the Q-value for every state-action pair.
+
+For example, in a 4 × 4 Grid World:
+- There are 16 possible states.
+- There are 4 possible actions: Up, Down, Left and Right.
+- The Q-table has 16 rows and 4 columns.
+
+
+
+
+
+
+
+
+linkedin.com
+
+
+2. Exploration
+
+Trying new actions to discover better rewards.
+
+3. Exploitation
+
+Choosing the action that currently has the highest Q-value.
+
+4. Learning Rate (Alpha, α)
+
+Controls how much new information influences the existing Q-value.
+- High alpha: Learns faster from new information.
+- Low alpha: Updates more slowly.
+5. Discount Factor (Gamma, γ)
+
+Determines how much importance is given to future rewards.
+- Gamma near 0: Prefers immediate rewards.
+- Gamma near 1: Gives more importance to future rewards.
+6. Epsilon (ε)
+
+Controls the probability of exploration in an epsilon-greedy strategy.
+- High epsilon: More exploration.
+- Low epsilon: More exploitation.
+5. Important formulas
+1. Q-Learning Update Rule
+
+This is the most important formula in your practical.
+\[
+Q(s,a)\leftarrow Q(s,a)+
+\alpha[r+\gamma\max_{a'}Q(s',a')-Q(s,a)]
+\]
+
+Where:
+Symbol	Meaning
+\(Q(s,a)\)	Current Q-value
+\(\alpha\)	Learning rate
+\(r\)	Immediate reward
+\(\gamma\)	Discount factor
+\(s\)	Current state
+\(a\)	Current action
+\(s'\)	Next state
+\(\max Q(s',a')\)	Maximum future Q-value
+
+2. Epsilon-Greedy Strategy
+
+The agent chooses:
+- Random action with probability ε (exploration).
+- Best known action with probability \(1-\epsilon\) (exploitation).
+\[
+P(Explore)=\epsilon
+\]
+
+\[
+P(Exploit)=1-\epsilon
+\]
+
+3. Epsilon Decay
+
+A common method of gradually reducing exploration:
+\[
+\epsilon_{new}=\max(\epsilon_{min},
+\epsilon_{old}\times decay)
+\]
+
+This allows the agent to explore more initially and exploit more as learning progresses.
+
+4. Total Episode Reward
+\[
+R_{total}=\sum_{t=0}^{T}r_t
+\]
+
+It calculates the total reward collected in one episode.
+
+5. Optimal Policy
+\[
+\pi^*(s)=\arg\max_a Q^*(s,a)
+\]
+
+It selects the action with the highest optimal Q-value for a given state.
+6. Working of Q-Learning
+
+
+
+
+
+
+
+
+aieworks.substack.com
+
+
+1. Initialize the Q-table with zeros.
+2. Select the starting state.
+3. Choose an action using epsilon-greedy strategy.
+4. Perform the action.
+5. Receive a reward from the environment.
+6. Observe the next state.
+7. Update the Q-value using the Q-learning formula.
+8. Repeat until the episode finishes.
+9. Train for multiple episodes.
+10. Obtain the optimal policy.
+7. Important terms
+Term	Meaning
+Reinforcement Learning	Learning through rewards and penalties
+Agent	Decision-maker
+Environment	Surroundings
+State	Current situation
+Action	Decision taken
+Reward	Feedback
+Q-Table	Stores state-action values
+Policy	Strategy for choosing actions
+Exploration	Trying new actions
+Exploitation	Using the best-known action
+Episode	One complete learning attempt
+Learning Rate	Controls Q-value updates
+Discount Factor	Importance of future rewards
+
+
+Important formula revision sheet
+These are the formulas I recommend learning first because they are directly connected to the practical programs and their outputs.
+Practical	Formula	Purpose
+Feature Engineering	\(Z=(X-\mu)/\sigma\)	Standardization
+PCA	\(Cv=\lambda v\)	Eigenvalue calculation
+PCA	\(EVR=\lambda_i/\sum\lambda\)	Explained variance
+LDA	\(J(W)=\frac{|W^TS_BW|}{|W^TS_WW|}\)	Class separation
+Multiple Regression	\(Y=b_0+\sum b_iX_i\)	Prediction
+MSE	\(\frac{1}{n}\sum(Y-\hat Y)^2\)	Prediction error
+RMSE	\(\sqrt{MSE}\)	Prediction error
+R²	\(1-\frac{SS_{res}}{SS_{tot}}\)	Model performance
+Polynomial Regression	\(Y=b_0+b_1X+\cdots+b_nX^n\)	Nonlinear relationship
+Ridge	\(SSE+\lambda\sum\beta_j^2\)	L2 regularization
+Lasso	\(SSE+\lambda\sum|\beta_j|\)	L1 regularization
+Logistic Regression	\(\frac{1}{1+e^{-z}}\)	Probability
+SVM	\(w^Tx+b=0\)	Decision boundary
+K-Means	\(\sum||x_i-\mu_k||^2\)	Cluster optimization
+DBSCAN	\(d(p,q)\leq\epsilon\)	Neighbourhood
+Random Forest	\(Mode(T_1,\ldots,T_n)\)	Majority voting
+Q-Learning	\(Q\leftarrow Q+\alpha[r+\gamma\max Q'-Q]\)	Learning update
+
+
+Important Python libraries used across the practicals
+Library	Purpose	Common functions
+NumPy	Numerical operations	array(), zeros(), mean()
+Pandas	Dataset handling	read_csv(), head(), fillna()
+Matplotlib	Graphs	plot(), scatter(), show()
+Seaborn	Statistical visualization	heatmap(), pairplot()
+Scikit-learn	ML algorithms	fit(), predict(), transform()
+Random	Random values and actions	random(), randint()
+
+Most important differences for viva
+These comparisons are particularly important because examiners frequently ask them.
+Comparison	Main difference
+PCA vs LDA	PCA maximizes variance; LDA maximizes class separation
+Linear vs Multiple Regression	One independent variable vs multiple independent variables
+Linear vs Polynomial Regression	Straight-line vs polynomial relationship
+Ridge vs Lasso	L2 penalty vs L1 penalty
+Regression vs Classification	Continuous output vs categorical output
+Precision vs Recall	Correctness of positive predictions vs coverage of actual positives
+Linear vs Nonlinear SVM	Linear vs nonlinear decision boundary
+K-Means vs DBSCAN	Centroid-based vs density-based clustering
+Bagging vs Boosting	Parallel independent learning vs sequential error correction
+Exploration vs Exploitation	Trying new actions vs using known best actions
+"""
+"""
